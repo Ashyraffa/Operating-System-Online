@@ -10,8 +10,16 @@ color: #f5f5f5;
 
 footer {
     background: linear-gradient(135deg, #111111, #222222, #333333);
+    width: 100%;   
+    backdrop-filter: blur(10%);
+    -webkit-backdrop-filter: blur(10%);
+    position: fixed;
+    bottom: 0;
+    left: 0;
     width: 100%;
 }
+
+
 
 .container {
     display: flex;
@@ -76,8 +84,13 @@ footer {
     gap: 20px;
 }
 
+.icons {
+    gap: 20px;
+}
 
-#menu button {
+
+
+#menu button, #content button {
     background-color: #555555;
     border-radius: 10px;
     padding: 10px 15px;
@@ -88,7 +101,7 @@ footer {
     cursor: pointer;
 }
 
-#menu button:hover {
+#menu button:hover, #content button:hover {
     background: rgba(255, 255, 255, 0.05);
 }
 
@@ -102,6 +115,20 @@ footer {
 }
 
 #title {
+    text-align: center;
+}
+
+#content {
+    margin: 100px;
+    padding: 15px;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    background-color: #222222;
+    gap: 18px;
+}
+
+h3 {
     text-align: center;
 }
 
@@ -119,6 +146,14 @@ footer {
     gap: 18px;
 }
 
+.about, .developers, .feedback, .aboutpc, .aboutos, .display {
+    background-color: #333333;
+    border-radius: 15px;
+    padding: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
 #menu div {
     display: flex;
     flex-direction: column;
@@ -132,7 +167,7 @@ footer {
     align-items: center;
 }
 
-#close {
+#close, #settingshome {
     background-color: #ff0000;
     border-radius: 10px;
     padding: 10px 15px;
@@ -140,7 +175,8 @@ footer {
     color: #f5f5f5;
 }
 
-#close:hover {
+#close:hover, #settingshome:hover {
     background-color: #8d0000;
 }
+
 
