@@ -76,7 +76,21 @@
       }
       document.getElementById('webview').src = url;
     }
+
+    function goBack() {
+  const iframe = document.getElementById('webview');
+  iframe.contentWindow.history.back();
+}
+
+function goForward() {
+  const iframe = document.getElementById('webview');
+  iframe.contentWindow.history.forward();
+}
+
+function refreshPage() {
+  const iframe = document.getElementById('webview');
+  iframe.src = iframe.src;
+}
   </script>
-  <script src="browser.js"></script>
 </body>
 </html>
