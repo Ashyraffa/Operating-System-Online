@@ -1,0 +1,52 @@
+.toolbar {
+    background-color: #333333;
+}
+
+#Green {
+    background-color: #00ff00;
+    border: none;
+    border-radius: 5px;
+}
+
+#Green:hover {
+    background-color: #00ff0090;
+}
+
+#urlInput {
+    border-radius: 5px;
+}
+
+#back {
+    background-color: #ff0000;
+    border: none;
+    border-radius: 5px;
+}
+
+#back:hover {
+    background-color: #a00202;
+}
+
+#close {
+    border: none;
+    border-radius: 5px;
+}
+
+#forward {
+    background-color: aquamarine;
+    border: none;
+    border-radius: 5px;
+}
+
+#forward:hover {
+    background-color: lawngreen;
+}
+
+#refresh {
+    background-color: lightseagreen;
+    border: none;
+    border-radius: 5px;
+}
+
+#refresh:hover {
+    background-color: rgb(22, 121, 116);
+}
