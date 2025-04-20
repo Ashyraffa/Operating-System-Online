@@ -12,7 +12,16 @@
     .toolbar {
       display: flex;
       padding: 8px;
-      background: #e0e0e0;
+    }
+    .footbar {
+      display: flex;
+      padding: 8px;
+      background: #333333;
+    }
+    .ribbon {
+      display: flex;
+      padding: 6px;
+      background-color: #e0e0e0;
     }
     input {
       flex: 1;
@@ -33,11 +42,49 @@
   <link rel="stylesheet" href="browser.css">
 </head>
 <body>
+  <div class="ribbon">
+    <div class="dropdown">
+     <button id="file">File</button>
+     <div class="dropdown-menu">
+      <button>New</button>
+      <button>Open</button>
+      <a href="desktop.html"><button style="text-align: left;">Close DaBrowser</button></a>
+     </div>
+    </div>
+     <div class="dropdown">
+      <button>Tools</button>
+      <div class="dropdown-menu">
+        <button>Pop-Up Blocker</button>
+        <button>Diagnose Internet Problems</button>
+        <button>Internet Options</button>
+      </div>
+     </div>
+     <div class="dropdown">
+      <button>View</button>
+      <div class="dropdown-menu">
+        <button onclick="goBack()">Back</button>
+        <button onclick="goForward">Forward</button>
+        <button onclick="refreshPage()">Refresh</button>
+        <button onclick="goHome()">Back to Home Page</button>
+        <button>Source</button>
+      </div>
+     </div>
+     <div class="dropdown">
+      <button>Help</button>
+      <div class="dropdown-menu">
+        <button style="width: 200px;" onclick="alert('Its because most mainstream websites block iframes. So this isnt the problem with the browser, but the website u want to visit itself.')">Some websites won't display...</button>
+        <button style="width: 200px;" onclick="alert('DaBrowser v2.0\nThis computer program is open-source. But it is made and belong under Ashyraffa. A copy and claim of this computer program will be taken seriously.')">About DaBrowser</button>
+      </div>
+     </div>
+  </div>
   <div class="toolbar">
     <a href="desktop.html"><button id="close">Close DaBrowser</button></a>
     <button id="back" onclick="goBack()">Back</button>
     <button id="forward" onclick="goForward()">Forward</button>
     <button id="refresh" onclick="refreshPage()">Refresh</button>
+    <button id="homepage" onclick="goHome()">Home Page</button> 
+  </div>
+  <div class="footbar">
     <input type="text" id="urlInput" placeholder="Search or enter web address" value="https://www.google.com">
     <button id="Green" onclick="loadSite()">Go</button>
   </div>
@@ -76,6 +123,12 @@
       }
       document.getElementById('webview').src = url;
     }
+
+    function goHome() {
+  const homepage = 'https://www.google.com';
+  document.getElementById('urlInput').value = homepage; // Update the URL input field
+  document.getElementById('webview').src = homepage; // Load the homepage in the iframe
+}
 
     function goBack() {
   const iframe = document.getElementById('webview');
