@@ -9,7 +9,7 @@
       margin: 0;
       background-color: #f4f4f4;
     }
-    .toolbar {
+    .toolbar, .bookmarks {
       display: flex;
       padding: 8px;
     }
@@ -20,7 +20,7 @@
     }
     .ribbon {
       display: flex;
-      padding: 6px;
+      padding: 1px;
       background-color: #e0e0e0;
     }
     input {
@@ -54,9 +54,9 @@
      <div class="dropdown">
       <button>Tools</button>
       <div class="dropdown-menu">
-        <button>Pop-Up Blocker</button>
-        <button>Diagnose Internet Problems</button>
-        <button>Internet Options</button>
+        <button style="text-align: left;">Pop-Up Blocker</button>
+        <button style="text-align: left;">Diagnose Internet Problems</button>
+        <button style="text-align: left;">Internet Options</button>
       </div>
      </div>
      <div class="dropdown">
@@ -65,15 +65,15 @@
         <button onclick="goBack()">Back</button>
         <button onclick="goForward">Forward</button>
         <button onclick="refreshPage()">Refresh</button>
-        <button onclick="goHome()">Back to Home Page</button>
+        <button style="text-align: left;" onclick="goHome()">Back to Home Page</button>
         <button>Source</button>
       </div>
      </div>
      <div class="dropdown">
       <button>Help</button>
       <div class="dropdown-menu">
-        <button style="width: 200px;" onclick="alert('Its because most mainstream websites block iframes. So this isnt the problem with the browser, but the website u want to visit itself.')">Some websites won't display...</button>
-        <button style="width: 200px;" onclick="alert('DaBrowser v2.0\nThis computer program is open-source. But it is made and belong under Ashyraffa. A copy and claim of this computer program will be taken seriously.')">About DaBrowser</button>
+        <button style="width: 200px; text-align: left;" onclick="alert('Its because most mainstream websites block iframes. So this isnt the problem with the browser, but the website u want to visit itself.')">Some websites won't display...</button>
+        <button style="width: 200px; text-align: left;" onclick="alert('DaBrowser v2.0\nThis computer program is open-source. But it is made and belong under Ashyraffa. A copy and claim of this computer program will be taken seriously.')">About DaBrowser</button>
       </div>
      </div>
   </div>
@@ -82,7 +82,16 @@
     <button id="back" onclick="goBack()">Back</button>
     <button id="forward" onclick="goForward()">Forward</button>
     <button id="refresh" onclick="refreshPage()">Refresh</button>
-    <button id="homepage" onclick="goHome()">Home Page</button> 
+    <button id="homepage" onclick="goHome()">Home Page</button>
+    <div style="position: relative; display: inline-block;">
+    <button id="bookmarks" onclick="showbookmarks()">Bookmarks</button>
+    <div class="bookmark">
+      <button style="text-align: left;" onclick="redirect()">Rainbow Bubblegem</button>
+      <button onclick="redirect3()">RSS Feeds</button></a>
+      <button style="text-align: left;" onclick="redirect2()">Ashyraffa's Website</button>
+    </div>
+    <button id="slicegallery">Web Slice Gallery</button>
+    </div>
   </div>
   <div class="footbar">
     <input type="text" id="urlInput" placeholder="Search or enter web address" value="https://www.google.com">
@@ -113,7 +122,7 @@
       </div>
     </div>
   </footer>
-  <iframe id="webview" src="https://www.google.com"></iframe>
+  <iframe id="webview" src="https://www.google.com?igu=1"></iframe>
   <script src="script.js"></script>
   <script>
     function loadSite() {
@@ -125,9 +134,24 @@
     }
 
     function goHome() {
-  const homepage = 'https://www.google.com';
-  document.getElementById('urlInput').value = homepage; // Update the URL input field
-  document.getElementById('webview').src = homepage; // Load the homepage in the iframe
+  const homepage = 'https://www.google.com?igu=1';
+  document.getElementById('urlInput').value = homepage;
+  document.getElementById('webview').src = homepage;
+}
+
+function redirect() {
+  const redirect = 'https://rainbow-bubblegem.fandom.com/wiki/Rainbow_Bubblegem_Wiki';
+  document.getElementById('urlInput').value = redirect;
+}
+
+function redirect2() {
+  const redirect2 = 'https://ashyraffa.github.io/Personal-Website';
+  document.getElementById('urlInput').value = redirect2;
+}
+
+function redirect3() {
+  const redirect3 = 'https://rss.com/blog/popular-rss-feeds/';
+  document.getElementById('urlInput').value = redirect3;
 }
 
     function goBack() {
@@ -143,6 +167,15 @@ function goForward() {
 function refreshPage() {
   const iframe = document.getElementById('webview');
   iframe.src = iframe.src;
+}
+
+function showbookmarks() {
+  const bookmarkDiv = document.querySelector('.bookmark'); // Select the div with the "bookmark" class
+  if (bookmarkDiv.style.display === 'block') {
+    bookmarkDiv.style.display = 'none'; // Hide the bookmarks
+  } else {
+    bookmarkDiv.style.display = 'block'; // Show the bookmarks
+  }
 }
   </script>
 </body>
