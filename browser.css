@@ -1,3 +1,7 @@
+body {
+    font-size: var(--base-font-size);
+}
+
 .toolbar {
     background-color: #333333;
 }

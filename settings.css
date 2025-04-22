@@ -87,7 +87,53 @@ footer {
     gap: 20px;
 }
 
+.windowbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #333333;
+}
 
+.windowbar p {
+    position: relative;
+    left: 1%;
+}
+
+.windowbar button {
+    background: #ff0000;
+    width: 50px;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    padding: 10px;
+    margin: 5px 1%;
+    font-size: 1.2em;
+}
+
+.windowbar button:hover {
+    background-color: #ff000091;
+}
+
+.allapps {
+    position: relative;
+    display: inline-block;
+}
+
+.apps {
+    display: none;
+    width: 100px;
+    position: absolute;
+    background: #e0e0e0;
+    min-width: 90px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+}
+
+
+#btn:hover .apps {
+    display: block;
+}
 
 #menu button, #content button {
     background-color: #555555;
