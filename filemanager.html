@@ -228,6 +228,9 @@
             fileInput.value = '';
         }
 
+        
+
+
         function viewFile(fileName) {
             const file = fileStorage.find(f => f.name === fileName);
 
@@ -250,7 +253,7 @@
             } else if (fileType === 'application/pdf' || file.name.endsWith('.pdf')) {
                 const reader = new FileReader();
                 reader.onload = function(event) {
-                    const pdfEmbed = `<embed src="${event.target.result}" type="application/pdf" width="100%" height="300px">`;
+                    const pdfEmbed = `<embed src="${event.target.result}" type="application/pdf" width="800px" height="500px">`;
                     document.getElementById('modalTitle').textContent = fileName;
                     document.getElementById('modalContent').innerHTML = pdfEmbed;
                     openModal();
@@ -270,6 +273,9 @@
                     openModal();
                 };
                 reader.readAsDataURL(file);
+            }
+            else {
+                alert("This file type is not supported.");
             }
         }
 
