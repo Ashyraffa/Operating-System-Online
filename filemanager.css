@@ -72,8 +72,11 @@
 
 .container {
     display: flex;
-    justify-content: center;
+    gap: 1rem; /* atau seberapa besar jarak antar elemen */
     align-items: center;
+    justify-content: center; /* atau 'center' tergantung kebutuhan */
+    flex-wrap: wrap; /* biar responsif dan gak mentok */
+
 }
 
 .sidebar {
@@ -104,6 +107,13 @@
     background: #e0e0e0;
     max-width: 1000px;
     border-radius: 10px;
+}
+
+.file-manager {
+    position: relative;
+    right: 20%;
+    width: 100%;
+    max-width: 750px;
 }
 
 .toolbar label {
