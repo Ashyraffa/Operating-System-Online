@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>File Manager</title>
+    <link rel="stylesheet" href="filemanager.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            font-size: var(--base-font-size);
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 100px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            z-index: 1000;
+        }
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .modal-header h2 {
+            margin: 0;
+        }
+        .modal-content {
+            max-width: 800px;
+            max-height: 600px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            background: #121212;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+        }
+        .file-list li, .file-list label {
+            color: black;
+        }
+
+        .file-list {
+            position: relative;
+            padding: 40px 50px;
+            background: #e0e0e0;
+            width: 1300px;
+            border-radius: 10px;
+        }
+
+        .file-list button {
+            background-color: #ff0000;
+            padding: 5px 10px;
+            border-radius: 10px;
+            border: none;
+            color: #fff
+        }
+
+        .file-list button:hover {
+            background-color: #ae0000;
+        }
+    </style>
+</head>
+<body>
+    <div class="windowbar">
+        <p>File Manager</p>
+        <a href="desktop.html"><button>X</button></a>
+    </div>
+
+    <div class="ribbon">
+        <div class="dropdown">
+          <button>File</button>
+          <div class="dropdown-menu">
+            <button style="text-align: left;" onclick="addFile()">Add File..</button>
+            <button style="text-align: left;" onclick="document.getElementById('fileInput').click()">Upload File..</button>
+          </div>
+         </div>
+         <div class="dropdown">
+          <button>Help</button>
+          <div class="dropdown-menu">
+            <button onclick="alert('File Manager\nThis computer program is a part of OSO and made by Ashyraffa. Another copy without a permission of this program will be taken seriously.')">About File Manager</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="container">
+
+      <div class="sidebar">
+        <button>Your PC</button>
+        <button>Local Disk (C:\)</button>
+        <a href="about.html"><button>Learn More About Your Computer</button></a>
+      </div>
+
+
+    <div class="file-manager">
+        <div class="toolbar">
+            <label>To upload your file here, press the "Upload File" button.</label>
+            <br>
+            <br>
+            <button onclick="addFile()">Add File</button>
+            <input type="file" id="fileInput" multiple style="display: none;" onchange="uploadFiles()">
+            <button onclick="document.getElementById('fileInput').click()">Upload Files</button>
+            <br>
+            <br>
+            <div class="disk">
+            <label>Local Disk (C:\)</label>
+            <br>
+            <h4>15.7 GB used from 40 GB</h4>
+            </div>
+        </div>
+        <ul class="file-list" id="fileList">
+            <label>When you add/upload your files, it will shown here.</label>
+        </ul>
+    </div>
+
+    <div class="modal-overlay" id="modalOverlay" onclick="closeModal()"></div>
+    <div class="modal" id="fileModal">
+        <div class="modal-header">
+            <h2 id="modalTitle">File Viewer</h2>
+            <button onclick="closeModal()">Close</button>
+        </div>
+        <div class="modal-content" id="modalContent"></div>
+    </div>
+
+    <script>
+        const fileList = document.getElementById('fileList');
+        const fileStorage = []; 
+
+        function addFile() {
+            const fileName = prompt('Enter file name:');
+            if (fileName) {
+                const li = document.createElement('li');
+                li.innerHTML = `
+                    <span>${fileName}</span>
+                    <button onclick="viewFile('${fileName}')">View</button>
+                    <button onclick="deleteFile(this, '${fileName}')">Delete</button>
+                `;
+                fileList.appendChild(li);
+            }
+        }
+
+        function uploadFiles() {
+            const fileInput = document.getElementById('fileInput');
+            const files = fileInput.files;
+
+            for (const file of files) {
+                fileStorage.push(file); // Store the file in memory
+                const li = document.createElement('li');
+                li.innerHTML = `
+                    <span>${file.name}</span>
+                    <button onclick="viewFile('${file.name}')">View</button>
+                    <button onclick="deleteFile(this, '${file.name}')">Delete</button>
+                `;
+                fileList.appendChild(li);
+            }
+
+            // Clear the file input after processing
+            fileInput.value = '';
+        }
+
+        function viewFile(fileName) {
+            const file = fileStorage.find(f => f.name === fileName);
+
+            if (!file) {
+                alert('File not found.');
+                return;
+            }
+
+            const fileType = file.type || file.name.split('.').pop();
+
+            if (fileType === 'text/plain' || file.name.endsWith('.txt')) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    const content = event.target.result;
+                    document.getElementById('modalTitle').textContent = fileName;
+                    document.getElementById('modalContent').textContent = content;
+                    openModal();
+                };
+                reader.readAsText(file);
+            } else if (fileType === 'application/pdf' || file.name.endsWith('.pdf')) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    const pdfEmbed = `<embed src="${event.target.result}" type="application/pdf" width="100%" height="300px">`;
+                    document.getElementById('modalTitle').textContent = fileName;
+                    document.getElementById('modalContent').innerHTML = pdfEmbed;
+                    openModal();
+                };
+                reader.readAsDataURL(file);
+            } else if (fileType.startsWith('image/') || file.name.endsWith('.png') || file.name.endsWith('.jpg')) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    const img = new Image();
+                    img.src = event.target.result;
+                    img.style.maxWidth = '100%';
+                    img.style.maxHeight = '300px';
+                    document.getElementById('modalTitle').textContent = fileName;
+                    const modalContent = document.getElementById('modalContent');
+                    modalContent.innerHTML = '';
+                    modalContent.appendChild(img);
+                    openModal();
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function openModal() {
+            document.getElementById('modalOverlay').style.display = 'block';
+            document.getElementById('fileModal').style.display = 'block';
+        }
+
+        function closeModal() {
+            document.getElementById('modalOverlay').style.display = 'none';
+            document.getElementById('fileModal').style.display = 'none';
+        }
+
+        function deleteFile(button, fileName) {
+            const li = button.parentElement;
+            fileList.removeChild(li);
+
+            // Remove the file from fileStorage
+            const fileIndex = fileStorage.findIndex(f => f.name === fileName);
+            if (fileIndex !== -1) {
+                fileStorage.splice(fileIndex, 1);
+            }
+        }
+    </script>
+      </div>
+
+<footer id="taskbar">
+    <div class="container">
+      <div class="left-side">
+        <div class="start">
+          <button id="start-button" class="start-button">Start</button>
+           <div class="start-menu" id="start-menu">
+            <a href="browser.html">DaBrowser</a>
+            <a href="desktop.html">Desktop</a>
+            <a href="filemanager.html">File Manager</a>
+            <a href="settings.html">Settings</a>
+            <a href="paint.html">Paint</a>
+            <a href="calculator.html">Calculator</a>
+            <a href="notes.html">Notes</a>
+            <a href="index.html">Lock This PC</a>
+           </div>
+          </div>
+          <div class="icons">
+              <a href="settings.html"><img src="icons/settings.png" width="40" height="40"></a>
+              <a href="paint.html"><img src="icons/paint.png" width="40" height="40"></a>
+              <a href="browser.html"><img src="icons/browser.png" width="40" height="40"></a>
+              <link rel="stylesheet" href="style.css">
+            </div>
+        </div>
+      <div class="system-tray">
+        <p id="clock">--:--:--</p>
+      </div>
+    </div>
+  </footer>
+  <script src="script.js"></script>
+</body>
+</html>
