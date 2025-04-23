@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>File Manager</title>
+    <title>Operating System Online</title>
     <link rel="stylesheet" href="filemanager.css">
     <style>
         body {
@@ -59,10 +59,9 @@
         }
 
         .file-list {
-            position: relative;
             padding: 40px 50px;
             background: #e0e0e0;
-            width: 1300px;
+            max-width: 1000px;
             border-radius: 10px;
         }
 
@@ -76,6 +75,57 @@
 
         .file-list button:hover {
             background-color: #ae0000;
+        }
+
+        .file-manager .toolbar {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .file-manager .disk {
+            margin-top: 20px;
+        }
+
+        /* Styles for 1600x900 resolution */
+        @media (max-width: 1600px) and (min-width: 1367px) {
+            .file-list {
+                width: 1200px;
+                padding: 30px 40px;
+            }
+
+            .file-manager .toolbar {
+                gap: 8px;
+            }
+
+            .file-manager .disk h4 {
+                font-size: 14px;
+            }
+        }
+
+        /* Styles for 1366x768 resolution */
+        @media (max-width: 1366px) {
+            .file-list {
+                width: 1000px;
+                padding: 20px 30px;
+            }
+
+            .file-manager .toolbar {
+                gap: 6px;
+            }
+
+            .file-manager .disk h4 {
+                font-size: 12px;
+            }
+
+            .modal {
+                padding: 80px;
+            }
+
+            .modal-content {
+                max-width: 700px;
+                max-height: 500px;
+            }
         }
     </style>
 </head>

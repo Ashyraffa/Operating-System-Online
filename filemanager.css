@@ -72,7 +72,7 @@
 
 .container {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
 }
 
@@ -100,10 +100,9 @@
 }
 
 .toolbar {
-    position: relative;
     padding: 40px 50px;
     background: #e0e0e0;
-    width: 1300px;
+    max-width: 1000px;
     border-radius: 10px;
 }
 
@@ -128,5 +127,51 @@
 
 .toolbar button:hover {
     background: #0047a5;
+}
+
+/* Styles for 1600x900 resolution */
+@media (max-width: 1600px) and (min-width: 1367px) {
+    .toolbar {
+        width: 1200px;
+        padding: 30px 40px;
+    }
+
+    .sidebar {
+        width: 200px;
+    }
+
+    .disk {
+        font-size: 14px;
+    }
+
+    .windowbar button {
+        font-size: 1.1em;
+        width: 45px;
+    }
+}
+
+/* Styles for 1366x768 resolution */
+@media (max-width: 1366px) {
+    .toolbar {
+        width: 1000px;
+        padding: 20px 30px;
+    }
+
+    .sidebar {
+        width: 180px;
+    }
+
+    .disk {
+        font-size: 12px;
+    }
+
+    .windowbar button {
+        font-size: 1em;
+        width: 40px;
+    }
+
+    .ribbon button {
+        padding: 5px 8px;
+    }
 }
 
