@@ -273,6 +273,24 @@
                     openModal();
                 };
                 reader.readAsDataURL(file);
+            } else if (fileType === 'audio/mpeg' || file.name.endsWith('.mp3')) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    const audioPlayer = `<audio controls><source src="${event.target.result}" type="audio/mpeg">Your browser doesnt support audio element.</audio>`;
+                    document.getElementById('modalTitle').textContent = fileName;
+                    document.getElementById('modalContent').innerHTML = audioPlayer;
+                    openModal();
+                };
+                reader.readAsDataURL(file);
+            } else if (fileType === 'video/mp4' || file.name.endsWith('.mp4')) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    const videoPlayer = `<video controls width="800"><source src="${event.target.result}" type="video/mp4">Your browser doesnt support video element.</video>`;
+                    document.getElementById('modalTitle').textContent = fileName;
+                    document.getElementById('modalContent').innerHTML = videoPlayer;
+                    openModal();
+                }
+                reader.readAsDataURL(file);
             }
             else {
                 alert("This file type is not supported.");
