@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="settings.css">
+    <title>Operating System Online</title>
+  </head>
+  <body>
+    <div class="windowbar">
+      <p>Settings</p>
+      <a href="desktop.html"><button>X</button></a>
+  </div>
+    <main id="settings">
+      <br>
+      <h3>Settings > Personalize</h3>
+      <br>
+      <section>
+        <div id="content">
+         <div class="aboutos">
+            <h2>Personalize your PC</h2>
+            <br>
+            <label for="wallpaperInput">Choose a wallpaper:</label>
+            <br>
+            <br>
+            <label style="font-weight: bold;">OSO Classics:</label>
+            <br><br>
+            <div id="osoclassics">
+              <img src="photos/wallpaper/alien-planet-3840x2160-22104.jpg" onclick="setRecommendedWallpaper('photos/wallpaper/alien-planet-3840x2160-22104.jpg')" style="width: 320px; height: 200px; object-fit: cover; cursor: pointer; margin-right: 10px;">
+              <img src="photos/wallpaper/night-starry-sky-forest-silhouette-astronomy-cosmos-5k-3840x2160-1679.jpg" onclick="setRecommendedWallpaper('photos/wallpaper/night-starry-sky-forest-silhouette-astronomy-cosmos-5k-3840x2160-1679.jpg')" style="width: 320px; height: 200px; object-fit: cover; cursor: pointer; margin-right: 10px;">
+              <img src="photos/wallpaper/sunflower-lonely-black-background-5k-3840x2160-1692.jpg" onclick="setRecommendedWallpaper('photos/wallpaper/sunflower-lonely-black-background-5k-3840x2160-1692.jpg')" style="width: 320px; height: 200px; object-fit: cover; cursor: pointer; margin-right: 10px;">
+              <img src="photos/wallpaper/twirls-colorful-spectrum-blue-3840x2160-1645.jpg" alt="Masjid Raya" onclick="setRecommendedWallpaper('photos/wallpaper/twirls-colorful-spectrum-blue-3840x2160-1645.jpg')" style="width: 320px; height: 200px; object-fit: cover; cursor: pointer; margin-right: 10px;">
+            </div>
+            <br>
+            <br>
+            <label style="font-weight: bold;">Indonesian Natures:</label>
+            <br><br>
+            <div id="indonesianpictures">
+              <img src="photos/wallpaper/masjid-raya.png" alt="Masjid Raya" onclick="setRecommendedWallpaper('photos/wallpaper/masjid-raya.png')" style="width: 320px; height: 200px; object-fit: cover; cursor: pointer; margin-right: 10px;">
+              <img src="photos/wallpaper/bali.png" alt="Bali" onclick="setRecommendedWallpaper('photos/wallpaper/bali.png')" style="width: 320px; height: 200px; object-fit: cover; cursor: pointer; margin-right: 10px;">
+              <img src="photos/wallpaper/jakarta.png" alt="Jakarta" onclick="setRecommendedWallpaper('photos/wallpaper/jakarta.png')" style="width: 320px; height: 200px; object-fit: cover; cursor: pointer; margin-right: 10px;">
+              <style>
+                #indonesianpictures, #osoclassics {
+                  display: flex;
+                  flex-wrap: wrap;
+                  justify-content: left;
+                  align-items: center;
+                  gap: 10px;
+                }
+              </style>
+              <script>
+                function setRecommendedWallpaper(imagePath) {
+                  localStorage.setItem('wallpaper', imagePath);
+                  alert("New wallpaper has been applied to your desktop!");
+                }
+              </script>
+            </div>
+            <br>
+            <br>
+            <br>
+            <br>
+            <label>Or set a image from your PC as wallpaper:</label>
+            <br>
+            <br>
+            <input type="file" id="wallpaperInput" accept="image/*">
+            <br><br>
+            <button onclick="saveWallpaper()">Set as desktop wallpaper</button>
+         </div>
+         <br>
+         <div class="accent-color" style="width: 350px;">
+          <label>Choose Accent Color:</label>
+          <br><br>
+          <div id="colorOptions" style="display: flex; gap: 10px;">
+            <div onclick="setAccentColor('#ff0000')" style="width: 40px; height: 40px; background-color: #ff0000; cursor: pointer; border-radius: 50%;"></div>
+            <div onclick="setAccentColor('#ffa500')" style="width: 40px; height: 40px; background-color: #ffa500; cursor: pointer; border-radius: 50%;"></div>
+            <div onclick="setAccentColor('#ffff00')" style="width: 40px; height: 40px; background-color: #ffff00; cursor: pointer; border-radius: 50%;"></div>
+            <div onclick="setAccentColor('#008000')" style="width: 40px; height: 40px; background-color: #008000; cursor: pointer; border-radius: 50%;"></div>
+            <div onclick="setAccentColor('#0000ff')" style="width: 40px; height: 40px; background-color: #0000ff; cursor: pointer; border-radius: 50%;"></div>
+            <div onclick="setAccentColor('#800080')" style="width: 40px; height: 40px; background-color: #800080; cursor: pointer; border-radius: 50%;"></div>
+          </div>
+        </div>
+         <br>
+         <br>
+        </div>
+        <script>
+          function saveWallpaper() {
+              const wallpaperInput = document.getElementById('wallpaperInput');
+              const file = wallpaperInput.files[0];
+  
+              if (file) {
+                  const reader = new FileReader();
+                  reader.onload = function (event) {
+                      localStorage.setItem('wallpaper', event.target.result);
+                      alert('New picture has been applied as your desktop wallpaper!');
+                  };
+                  reader.readAsDataURL(file);
+              } else {
+                  alert('Please select a image to customize your wallpaper.')
+              }
+          }
+        </script>
+      </section>
+              <br>
+              <br>  
+              <br>
+    </main>
+    <footer id="taskbar">
+        <div class="container">
+          <div class="left-side">
+            <div class="start">
+              <button id="start-button" class="start-button">Start</button>
+               <div class="start-menu" id="start-menu">
+                <a href="browser.html">DaBrowser</a>
+                <a href="desktop.html">Desktop</a>
+                <a href="filemanager.html">File Manager</a>
+                <a href="settings.html">Settings</a>
+                <a href="paint.html">Paint</a>
+                <a href="calculator.html">Calculator</a>
+                <a href="notes.html">Notes</a>
+                <a href="index.html">Lock This PC</a>
+               </div>
+              </div>
+              <div class="icons">
+                  <a href="settings.html"><img src="icons/settings.png" width="40" height="40"></a>
+                  <a href="paint.html"><img src="icons/paint.png" width="40" height="40"></a>
+                  <a href="browser.html"><img src="icons/browser.png" width="40" height="40"></a>
+                  <a href="notes.html"><img src="icons/notes.png" width="40" height="40"></a>
+                  <a href="calculator.html"><img src="icons/calculator.png" width="40" height="40"></a>
+                  <a href="filemanager.html"><img src="icons/file-manager.png" width="40" height="40"></a>
+                  <link rel="stylesheet" href="style.css">
+                </div>
+            </div>
+          <div class="system-tray">
+            <p id="clock">--:--:--</p>
+          </div>
+        </div>
+      </footer>
+      <script src="script.js"></script>
+      <script src="accesilibilty.js"></script>
+  </body>
+</html>

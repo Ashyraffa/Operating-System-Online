@@ -14,17 +14,22 @@
       <br>
         <h3>Settings</h3>
       <section id="menu">
-        <div class="about">
+        <div class="about" style="width: 350px;">
            <a href="about.html"><button>About</button></a>
            <br>
            <label>About your PC and Operating System Online</label>
         </div>
-        <div class="accessibility">
+        <div class="personalize" style="width: 350px;">
+          <a href="personalize.html"><button>Personalization</button></a>
+          <br>
+          <label>Personalize your PC</label>
+        </div>
+        <div class="accessibility" style="width: 350px;">
           <a href="accesilibilty.html"><button>Accessibility</button></a>
           <br>
           <label>Adjust text size in the OS</label>
         </div>
-        <div class="developers">
+        <div class="developers" style="width: 350px;">
             <a href="developer.html"><button>Developer Options</button></a>
             <br>
             <label>This option are intended for developers only</label>
@@ -33,7 +38,7 @@
           <button id="reset-settings">Reset to Default Settings</button>
           <script>
               document.getElementById('reset-settings').addEventListener('click', () => {
-              if (confirm('Are you sure you want to reset all settings?')) {
+              if (confirm('Are you sure you want to reset all settings?\nThis will reset all of your settings and personalization options youre made so far.')) {
               localStorage.clear();
               location.reload();
                }
@@ -69,6 +74,9 @@
                 <a href="settings.html"><img src="icons/settings.png" width="40" height="40"></a>
                 <a href="paint.html"><img src="icons/paint.png" width="40" height="40"></a>
                 <a href="browser.html"><img src="icons/browser.png" width="40" height="40"></a>
+                <a href="notes.html"><img src="icons/notes.png" width="40" height="40"></a>
+                <a href="calculator.html"><img src="icons/calculator.png" width="40" height="40"></a>
+                <a href="filemanager.html"><img src="icons/file-manager.png" width="40" height="40"></a>
                 <link rel="stylesheet" href="style.css">
               </div>
           </div>

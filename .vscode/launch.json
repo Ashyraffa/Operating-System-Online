@@ -8,7 +8,7 @@
             "type": "chrome",
             "request": "launch",
             "name": "Open index.html",
-            "file": "d:\\Users\\raffa\\Dokumen\\Coding-Project\\os\\filemanager.html"
+            "file": "d:\\Users\\raffa\\Dokumen\\Coding-Project\\os\\personalize.html"
         }
     ]
 }

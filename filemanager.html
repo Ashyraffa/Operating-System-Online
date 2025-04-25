@@ -194,7 +194,11 @@
 
     <script>
         const fileList = document.getElementById('fileList');
-        const fileStorage = []; 
+        let fileStorage = JSON.parse(localStorage.getItem('fileStorage')) || [];
+
+        function saveToLocalStorage() {
+            localStorage.setItem('fileStorage', JSON.stringify(fileStorage));
+        }
 
         function addFile() {
             const fileName = prompt('Enter file name:');
@@ -221,7 +225,6 @@
                     <button onclick="viewFile('${file.name}')">View</button>
                     <button onclick="deleteFile(this, '${file.name}')">Delete</button>
                 `;
-                fileList.appendChild(li);
             }
 
             // Clear the file input after processing
@@ -340,6 +343,9 @@
               <a href="settings.html"><img src="icons/settings.png" width="40" height="40"></a>
               <a href="paint.html"><img src="icons/paint.png" width="40" height="40"></a>
               <a href="browser.html"><img src="icons/browser.png" width="40" height="40"></a>
+              <a href="notes.html"><img src="icons/notes.png" width="40" height="40"></a>
+              <a href="calculator.html"><img src="icons/calculator.png" width="40" height="40"></a>
+              <a href="filemanager.html"><img src="icons/file-manager.png" width="40" height="40"></a>
               <link rel="stylesheet" href="style.css">
             </div>
         </div>
