@@ -2,47 +2,42 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="settings.css">
+    <link rel="stylesheet" href="notes.css">
     <title>Operating System Online</title>
+    <style>
+        iframe {
+            width: 100%;
+      height: calc(100vh - 40px);
+      border: none;
+        }
+    </style>
   </head>
   <body>
     <div class="windowbar">
-      <p>Settings</p>
-      <a href="desktop.html"><button>X</button></a>
-  </div>
-    <main id="settings">
-      <br>
-        <h3>Settings > Accessibility</h3>
-      <section>
-        <div id="content">
-            <div class="aboutpc">
-                <h4>Accessibility Options</h4>
-                <button id="increase-text">Increase Text Size</button>
-                <button id="decrease-text">Decrease Text Size</button>
-            </div>
-            <script src="accesilibilty.js"></script>
-        </div> 
-        <br>
-        <br>  
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-      </section>
-      <br>
-      <br>
-      <br>
-      <br>
-      <br>
-      <br>
-      <br>
-      <br>
-      <br>
-      <br>
-      <br>
-    </main>
+        <p>Virtual PC</p>
+        <a href="desktop.html"><button>X</button></a>
+    </div>
+    <div class="ribbon">
+      <div class="dropdown">
+        <button>Tools</button>
+        <div class="dropdown-menu">
+          <button style="text-align: left;">Take Snapshot...</button>
+          <button style="text-align: left;" onclick="toggleFullScreen()">Full-Screen...</button>
+          <a href="desktop.html"><button style="text-align: left;">Shut Down VM..</button></a>
+        </div>
+       </div>
+       <div class="dropdown">
+        <button>Help</button>
+        <div class="dropdown-menu">
+          <button onclick="alert('Virtual PC\nThis computer program is a part of OSO and made by Ashyraffa. Another copy without a permission of this program will be taken seriously.')">About Virtual PC</button>
+        </div>
+      </div>
+    </div>
+    
+
+    <iframe id="webview" src="https://ashyraffa.github.io/Operating-System-Online"></iframe>
+
+  
     <footer id="taskbar">
       <div class="container">
         <div class="left-side">
@@ -81,6 +76,20 @@
         </div>
       </div>
     </footer>
+    <script>
+        function toggleFullScreen() {
+          const iframe = document.getElementById('webview');
+          if (!document.fullscreenElement) {
+            // Request full-screen for the iframe
+            iframe.requestFullscreen().catch(err => {
+              alert(`Error attempting to enable full-screen mode: ${err.message}`);
+            });
+          } else {
+            // Exit full-screen mode
+            document.exitFullscreen();
+          }
+        }
+      </script>
     <script src="script.js"></script>
     <script src="accesilibilty.js"></script>
   </body>
