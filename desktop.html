@@ -16,8 +16,16 @@
     <br>
     <br>
     <br>
+    <div class="shortcut">
+      <a href="filemanager.html"><img src="icons/file-manager.png" width="40" height="40"></a>
+      <p>File Manager</p>
+    </div>
     <br>
     <br>
+    <div class="shortcut">
+      <a href="browser.html"><img src="icons/browser.png" width="40" height="40"></a>
+      <p>DaBrowser</p>
+    </div>
     <br>
     <br>
     <br>
@@ -26,24 +34,13 @@
     <br>
     <br>
     <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
+    <div id="custom-menu" class="context-menu">
+      <ul>
+        <li onclick="location.reload()">Refresh</li>
+        <a href="about.html" style="text-decoration: none; color: #f5f5f5;"><li>PC Properties</li></a>
+        <a href="personalize.html" style="text-decoration: none; color: #f5f5f5;"><li>Personalization</li></a>
+      </ul>
+    </div>
     <br>
     <br>
     <br>
@@ -63,13 +60,18 @@
           <div class="start">
             <button id="start-button" class="start-button">Start</button>
              <div class="start-menu" id="start-menu">
-              <a href="browser.html">DaBrowser</a>
+              <a href="#" class="all-apps">All Apps</a>
+              <div class="start-dropdown">
+                <a href="browser.html">DaBrowser</a>
+                <a href="paint.html">Paint</a>
+                <a href="notes.html">Notes</a>
+                <a href="calculator.html">Calculator</a>
+                <a href="filemanager.html">File Manager</a>
+              </div>
+              <a href="browser.html">DaBrowser <br> <label style="font-weight: lighter;">Browse the internet</label></a>
               <a href="desktop.html">Desktop</a>
-              <a href="filemanager.html">File Manager</a>
               <a href="settings.html">Settings</a>
-              <a href="paint.html">Paint</a>
-              <a href="calculator.html">Calculator</a>
-              <a href="notes.html">Notes</a>
+              <a href="filemanager.html">File Manager</a>
               <a href="index.html">Lock This PC</a>
              </div>
             </div>
@@ -85,6 +87,8 @@
           </div>
         <div class="system-tray">
           <p id="clock">--:--:--</p>
+          <br>
+          <p id="date">--/--/----</p>
         </div>
       </div>
     </footer>

@@ -12,7 +12,7 @@
   </div>
     <main id="settings">
       <br>
-      <h3>Settings > Personalize</h3>
+      <h3>Settings > Personalization</h3>
       <br>
       <section>
         <div id="content">
@@ -64,8 +64,7 @@
             <input type="file" id="wallpaperInput" accept="image/*">
             <br><br>
             <button onclick="saveWallpaper()">Set as desktop wallpaper</button>
-         </div>
-         <br>
+            <br>
          <br>
         </div>
         <script>
@@ -84,6 +83,21 @@
                   alert('Please select a image to customize your wallpaper.')
               }
           }
+
+          function setAccentColor(color) {
+            localStorage.setItem('accentColor', color);
+            applyAccentColor(color);
+            alert('New accent color has been applied!')
+          }
+
+          function applyAccentColor(color) {
+            document.documentElement.style.setProperty('--accent-color', color);
+          }
+
+          document.addEventListener('DOMContentLoaded', () => {
+            const savedColor = localStorage.setItem('accentColor') || '#ff0000';
+            applyAccentColor(savedColor);
+          });
         </script>
       </section>
               <br>
@@ -118,6 +132,8 @@
             </div>
           <div class="system-tray">
             <p id="clock">--:--:--</p>
+            <br>
+          <p id="date">--/--/----</p>
           </div>
         </div>
       </footer>

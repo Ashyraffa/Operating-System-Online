@@ -16,3 +16,38 @@ document.getElementById('start-button').addEventListener('click', function () {
     const menu = document.getElementById('start-menu');
     menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
 });
+
+function updateDate() {
+    const dateElement = document.getElementById('date');
+    const now = new Date();
+    const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
+    const formattedDate = now.toLocaleDateString('en-US', options);
+    dateElement.textContent = formattedDate;
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+    updateDate();
+});
+
+const customMenu = document.getElementById('custom-menu');
+const taskbar = document.getElementById('taskbar');
+
+document.addEventListener('contextmenu', function (event) {
+
+  if (taskbar.contains(event.target)) {
+    return; 
+  }
+
+  event.preventDefault(); // Prevent the default context menu
+
+  
+  customMenu.style.top = `${event.clientY}px`;
+  customMenu.style.left = `${event.clientX}px`;
+  customMenu.style.display = 'block';
+});
+
+
+document.addEventListener('click', function () {
+  customMenu.style.display = 'none';
+});
+

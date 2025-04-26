@@ -1,16 +1,19 @@
-// clock.js
-function updateClock() {
+function updateClockAndDate() {
     const now = new Date();
-    const hours = String(now.getHours()).padStart(2, '0');
-    const minutes = String(now.getMinutes()).padStart(2, '0');
-    const timeString = `${hours}:${minutes}`;
-    
-    console.log(timeString); // Display in console
-    document.getElementById('time').textContent = timeString; // Update HTML element
+
+    // Format the time (e.g., "14:30")
+    const hours = now.getHours().toString().padStart(2, '0');
+    const minutes = now.getMinutes().toString().padStart(2, '0');
+    document.getElementById('time').textContent = `${hours}:${minutes}`;
+
+    // Format the date (e.g., "Sunday, 7 January")
+    const options = { weekday: 'long', day: 'numeric', month: 'long' };
+    const formattedDate = now.toLocaleDateString('en-US', options);
+    document.getElementById('date').textContent = formattedDate;
 }
 
-// Ensure the clock updates every second
-setInterval(updateClock, 1000);
+// Update the clock and date every second
+setInterval(updateClockAndDate, 1000);
 
-// Initialize the clock on page load
-document.addEventListener('DOMContentLoaded', updateClock);
+// Call the function once to initialize immediately
+updateClockAndDate();

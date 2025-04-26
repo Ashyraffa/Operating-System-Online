@@ -191,7 +191,7 @@ h3 {
     gap: 18px;
 }
 
-.about, .developers, .feedback, .aboutpc, .aboutos, .display, .accessibility, .personalize, .accent-color {
+.about, .developers, .feedback, .aboutpc, .aboutos, .display, .accessibility, .personalize {
     background-color: #333333;
     border-radius: 15px;
     padding: 10px;

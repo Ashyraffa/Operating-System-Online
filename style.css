@@ -44,6 +44,37 @@ footer {
     display: inline-block;
 }
 
+.start-dropdown {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 100%;
+    background-color: #444444;
+    border: none;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    padding: 10px;
+    width: 150px;
+    border-radius: 15px;
+}
+
+.start-dropdown a {
+    display: block;
+    padding: 5px 10px;
+    text-decoration: none;
+    color: #000;
+  }
+  
+  .start-dropdown a:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #fff;
+  }
+  
+  .all-apps:hover + .start-dropdown,
+  .start-dropdown:hover {
+    display: block;
+  }
+
 .start-menu {
     display: none;
     position: absolute;
@@ -86,6 +117,55 @@ footer {
     justify-content: center;
     align-items: center;
 }
+
+.system-tray p {
+    display: inline;
+  }
+  
+  #clock {
+    margin-right: 10px;
+  }
+
+  .shortcut {
+    position: relative;
+    left: 3%;
+    display: inline-block;
+    text-align: center;
+  }
+
+   .shortcut p {
+    font-weight: bold;
+    color: #f5f5f5;
+    -webkit-text-stroke: 0.75px #121212;
+    font-size: 18px;
+   }
+
+   .context-menu {
+    display: none; /* Hidden by default */
+    position: absolute;
+    background-color: #333;
+    color: #fff;
+    border: 1px solid #444;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    width: 150px;
+  }
+  
+  .context-menu ul {
+    list-style: none;
+    margin: 0;
+    padding: 5px 0;
+  }
+  
+  .context-menu li {
+    padding: 8px 12px;
+    cursor: pointer;
+  }
+  
+  .context-menu li:hover {
+    background-color: #555;
+  }
 
 
 

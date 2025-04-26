@@ -59,9 +59,12 @@
         }
 
         .file-list {
-            padding: 40px 50px;
+            padding: 20px 30px;
             background: #e0e0e0;
-            max-width: 1000px;
+            width: 100%;
+            max-width: 100%;
+            box-sizing: border-box;
+            overflow-x: auto;
             border-radius: 10px;
         }
 
@@ -83,50 +86,7 @@
             gap: 10px;
         }
 
-        .file-manager .disk {
-            margin-top: 20px;
-        }
 
-        /* Styles for 1600x900 resolution */
-        @media (max-width: 1600px) and (min-width: 1367px) {
-            .file-list {
-                width: 1200px;
-                padding: 30px 40px;
-            }
-
-            .file-manager .toolbar {
-                gap: 8px;
-            }
-
-            .file-manager .disk h4 {
-                font-size: 14px;
-            }
-        }
-
-        /* Styles for 1366x768 resolution */
-        @media (max-width: 1366px) {
-            .file-list {
-                width: 1000px;
-                padding: 20px 30px;
-            }
-
-            .file-manager .toolbar {
-                gap: 6px;
-            }
-
-            .file-manager .disk h4 {
-                font-size: 12px;
-            }
-
-            .modal {
-                padding: 80px;
-            }
-
-            .modal-content {
-                max-width: 700px;
-                max-height: 500px;
-            }
-        }
     </style>
 </head>
 <body>
@@ -153,12 +113,6 @@
 
       <div class="container">
 
-      <div class="sidebar">
-        <button>Your PC</button>
-        <button>Local Disk (C:\)</button>
-        <a href="about.html"><button>Learn More About Your Computer</button></a>
-      </div>
-
 
     <div class="file-manager">
         <div class="toolbar">
@@ -178,8 +132,6 @@
         </div>
         <ul class="file-list" id="fileList">
             <label>When you add/upload your files, it will shown here.</label>
-            <br>
-            <br>
         </ul>
     </div>
 
@@ -351,6 +303,8 @@
         </div>
       <div class="system-tray">
         <p id="clock">--:--:--</p>
+        <br>
+          <p id="date">--/--/----</p>
       </div>
     </div>
   </footer>
