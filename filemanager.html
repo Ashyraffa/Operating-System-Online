@@ -145,134 +145,119 @@
     </div>
 
     <script>
-        const fileList = document.getElementById('fileList');
-        let fileStorage = JSON.parse(localStorage.getItem('fileStorage')) || [];
+    const fileList = document.getElementById('fileList');
+    let fileStorage = JSON.parse(localStorage.getItem('fileStorage')) || []; // Load from localStorage
 
-        function saveToLocalStorage() {
-            localStorage.setItem('fileStorage', JSON.stringify(fileStorage));
-        }
+    function loadFiles() {
+        fileList.innerHTML = '';
+        fileStorage.forEach(file => {
+            const li = document.createElement('li');
+            li.innerHTML = `
+                <span>${file.name}</span>
+                <button onclick="viewFile('${file.name}')">View</button>
+                <button onclick="deleteFile(this, '${file.name}')">Delete</button>
+            `;
+            fileList.appendChild(li);
+        });
+    }
 
-        function addFile() {
-            const fileName = prompt('Enter file name:');
-            if (fileName) {
-                const li = document.createElement('li');
-                li.innerHTML = `
-                    <span>${fileName}</span>
-                    <button onclick="viewFile('${fileName}')">View</button>
-                    <button onclick="deleteFile(this, '${fileName}')">Delete</button>
-                `;
-                fileList.appendChild(li);
-            }
-        }
+    function saveToLocalStorage() {
+        localStorage.setItem('fileStorage', JSON.stringify(fileStorage));
+    }
 
-        function uploadFiles() {
-            const fileInput = document.getElementById('fileInput');
-            const files = fileInput.files;
+    function uploadFiles() {
+        const fileInput = document.getElementById('fileInput');
+        const files = fileInput.files;
 
-            for (const file of files) {
-                fileStorage.push(file); // Store the file in memory
+        for (const file of files) {
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                const fileData = {
+                    name: file.name,
+                    type: file.type,
+                    content: event.target.result, // Store file content as Base64
+                };
+                fileStorage.push(fileData);
+                saveToLocalStorage();
+
                 const li = document.createElement('li');
                 li.innerHTML = `
                     <span>${file.name}</span>
                     <button onclick="viewFile('${file.name}')">View</button>
                     <button onclick="deleteFile(this, '${file.name}')">Delete</button>
                 `;
-            }
-
-            // Clear the file input after processing
-            fileInput.value = '';
+                fileList.appendChild(li);
+            };
+            reader.readAsDataURL(file); // Read file as Base64
         }
 
-        
+        // Clear the file input after processing
+        fileInput.value = '';
+    }
 
+    function viewFile(fileName) {
+        const file = fileStorage.find(f => f.name === fileName);
 
-        function viewFile(fileName) {
-            const file = fileStorage.find(f => f.name === fileName);
-
-            if (!file) {
-                alert('File not found.');
-                return;
-            }
-
-            const fileType = file.type || file.name.split('.').pop();
-
-            if (fileType === 'text/plain' || file.name.endsWith('.txt')) {
-                const reader = new FileReader();
-                reader.onload = function(event) {
-                    const content = event.target.result;
-                    document.getElementById('modalTitle').textContent = fileName;
-                    document.getElementById('modalContent').textContent = content;
-                    openModal();
-                };
-                reader.readAsText(file);
-            } else if (fileType === 'application/pdf' || file.name.endsWith('.pdf')) {
-                const reader = new FileReader();
-                reader.onload = function(event) {
-                    const pdfEmbed = `<embed src="${event.target.result}" type="application/pdf" width="800px" height="500px">`;
-                    document.getElementById('modalTitle').textContent = fileName;
-                    document.getElementById('modalContent').innerHTML = pdfEmbed;
-                    openModal();
-                };
-                reader.readAsDataURL(file);
-            } else if (fileType.startsWith('image/') || file.name.endsWith('.png') || file.name.endsWith('.jpg')) {
-                const reader = new FileReader();
-                reader.onload = function(event) {
-                    const img = new Image();
-                    img.src = event.target.result;
-                    img.style.maxWidth = '100%';
-                    img.style.maxHeight = '300px';
-                    document.getElementById('modalTitle').textContent = fileName;
-                    const modalContent = document.getElementById('modalContent');
-                    modalContent.innerHTML = '';
-                    modalContent.appendChild(img);
-                    openModal();
-                };
-                reader.readAsDataURL(file);
-            } else if (fileType === 'audio/mpeg' || file.name.endsWith('.mp3')) {
-                const reader = new FileReader();
-                reader.onload = function(event) {
-                    const audioPlayer = `<audio controls><source src="${event.target.result}" type="audio/mpeg">Your browser doesnt support audio element.</audio>`;
-                    document.getElementById('modalTitle').textContent = fileName;
-                    document.getElementById('modalContent').innerHTML = audioPlayer;
-                    openModal();
-                };
-                reader.readAsDataURL(file);
-            } else if (fileType === 'video/mp4' || file.name.endsWith('.mp4')) {
-                const reader = new FileReader();
-                reader.onload = function(event) {
-                    const videoPlayer = `<video controls width="800"><source src="${event.target.result}" type="video/mp4">Your browser doesnt support video element.</video>`;
-                    document.getElementById('modalTitle').textContent = fileName;
-                    document.getElementById('modalContent').innerHTML = videoPlayer;
-                    openModal();
-                }
-                reader.readAsDataURL(file);
-            }
-            else {
-                alert("This file type is not supported.");
-            }
+        if (!file) {
+            alert('File not found.');
+            return;
         }
 
-        function openModal() {
-            document.getElementById('modalOverlay').style.display = 'block';
-            document.getElementById('fileModal').style.display = 'block';
-        }
+        const fileType = file.type;
 
-        function closeModal() {
-            document.getElementById('modalOverlay').style.display = 'none';
-            document.getElementById('fileModal').style.display = 'none';
+        if (fileType.startsWith('text/')) {
+            document.getElementById('modalTitle').textContent = fileName;
+            document.getElementById('modalContent').textContent = atob(file.content.split(',')[1]); // Decode Base64
+            openModal();
+        } else if (fileType.startsWith('image/')) {
+            const img = new Image();
+            img.src = file.content;
+            img.style.maxWidth = '100%';
+            img.style.maxHeight = '300px';
+            document.getElementById('modalTitle').textContent = fileName;
+            const modalContent = document.getElementById('modalContent');
+            modalContent.innerHTML = '';
+            modalContent.appendChild(img);
+            openModal();
+        } else if (fileType.startsWith('audio/')) {
+            const audioPlayer = `<audio controls><source src="${file.content}" type="${fileType}">Your browser doesn't support the audio element.</audio>`;
+            document.getElementById('modalTitle').textContent = fileName;
+            document.getElementById('modalContent').innerHTML = audioPlayer;
+            openModal();
+        } else if (fileType.startsWith('video/')) {
+            const videoPlayer = `<video controls width="800"><source src="${file.content}" type="${fileType}">Your browser doesn't support the video element.</video>`;
+            document.getElementById('modalTitle').textContent = fileName;
+            document.getElementById('modalContent').innerHTML = videoPlayer;
+            openModal();
+        } else {
+            alert('This file type is not supported.');
         }
+    }
 
-        function deleteFile(button, fileName) {
-            const li = button.parentElement;
-            fileList.removeChild(li);
+    function deleteFile(button, fileName) {
+        const li = button.parentElement;
+        fileList.removeChild(li);
 
-            // Remove the file from fileStorage
-            const fileIndex = fileStorage.findIndex(f => f.name === fileName);
-            if (fileIndex !== -1) {
-                fileStorage.splice(fileIndex, 1);
-            }
+        const fileIndex = fileStorage.findIndex(f => f.name === fileName);
+        if (fileIndex !== -1) {
+            fileStorage.splice(fileIndex, 1);
+            saveToLocalStorage();
         }
+    }
+
+    function openModal() {
+        document.getElementById('modalOverlay').style.display = 'block';
+        document.getElementById('fileModal').style.display = 'block';
+    }
+
+    function closeModal() {
+        document.getElementById('modalOverlay').style.display = 'none';
+        document.getElementById('fileModal').style.display = 'none';
+    }
+
+    document.addEventListener('DOMContentLoaded', loadFiles);
     </script>
+
       </div>
 
       <footer id="taskbar">
