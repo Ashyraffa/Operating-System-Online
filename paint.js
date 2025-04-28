@@ -3,7 +3,7 @@ const canvas = document.getElementById('canvas');
 const increaseBtn = document.getElementById('increase');
 const decreaseBtn = document.getElementById('decrease');
 const sizeEl = document.getElementById('size');
-const colorEl = document.getElementById('color');
+const colorEl = document.getElementById('choose-color');
 const eraserBtn = document.getElementById('eraser');
 const clearBtn = document.getElementById('clear');
 const undoBtn = document.getElementById('undo');
@@ -23,8 +23,8 @@ let undoStack = [];
 let redoStack = [];
 
 // Set canvas size
-canvas.width = window.innerWidth * 0.8;
-canvas.height = window.innerHeight * 0.8;
+canvas.width = canvas.parentElement.clientWidth;
+canvas.height = canvas.parentElement.clientHeight;
 
 // Save the current canvas state
 function saveState() {
@@ -46,7 +46,7 @@ function restoreState(state) {
 function drawCircle(x, y) {
     ctx.beginPath();
     ctx.arc(x, y, size, 0, Math.PI * 2);
-    ctx.fillStyle = isEraser ? '#F5F5F5' : color;
+    ctx.fillStyle = isEraser ? '#FFFFFF' : color;
     ctx.fill();
 }
 
@@ -54,7 +54,7 @@ function drawLine(x1, y1, x2, y2) {
     ctx.beginPath();
     ctx.moveTo(x1, y1);
     ctx.lineTo(x2, y2);
-    ctx.strokeStyle = isEraser ? '#F5F5F5' : color;
+    ctx.strokeStyle = isEraser ? '#FFFFFF' : color;
     ctx.lineWidth = size * 2;
     ctx.stroke();
 }
@@ -64,41 +64,9 @@ function updateSizeOnScreen() {
     sizeEl.innerText = size;
 }
 
-function adjustCanvasResolution() {
-    const rect = canvas.getBoundingClientRect();
-    canvas.width = rect.width;
-    canvas.height = rect.height;
-    ctx.scale(rect.width / canvas.width, rect.height / canvas.height);
-}
-
-adjustCanvasResolution();
-window.addEventListener('resize', adjustCanvasResolution);
-
-function saveState() {
-    undoStack.push(canvas.toDataURL());
-    redoStack = [];
-}
-
 // Event listeners for mouse
-function getMousePos(e) {
-    const rect = canvas.getBoundingClientRect();
-    return {
-        x: e.clientX - rect.left,
-        y: e.clientY - rect.top
-    };
-}
-
-function getTouchPos(touch) {
-    const rect = canvas.getBoundingClientRect();
-    return {
-        x: touch.clientX - rect.left,
-        y: touch.clientY - rect.top
-    };
-}
-
 canvas.addEventListener('mousedown', (e) => {
     isPressed = true;
-    const pos = getMousePos(e);
     x = e.offsetX;
     y = e.offsetY;
     saveState(); // Save canvas state for undo/redo
@@ -106,9 +74,8 @@ canvas.addEventListener('mousedown', (e) => {
 
 canvas.addEventListener('mousemove', (e) => {
     if (isPressed) {
-        const pos = getMousePos(e);
-        const x2 = pos.x;
-        const y2 = pos.y;
+        const x2 = e.offsetX;
+        const y2 = e.offsetY;
         drawCircle(x2, y2);
         drawLine(x, y, x2, y2);
         x = x2;
@@ -117,38 +84,6 @@ canvas.addEventListener('mousemove', (e) => {
 });
 
 canvas.addEventListener('mouseup', () => {
-    isPressed = false;
-    x = undefined;
-    y = undefined;
-});
-
-// Event listeners for touch (for touchscreens)
-canvas.addEventListener('touchstart', (e) => {
-    e.preventDefault();
-    isPressed = true;
-    const touch = e.touches[0];
-    const pos = getTouchPos(touch);
-    x = touch.clientX - canvas.offsetLeft;
-    y = touch.clientY - canvas.offsetTop;
-    saveState();
-});
-
-canvas.addEventListener('touchmove', (e) => {
-    e.preventDefault();
-    if (isPressed) {
-        const touch = e.touches[0];
-        const pos = getTouchPos(touch);
-        const x2 = pos.x
-        const y2 = pos.y;
-        drawCircle(x2, y2);
-        drawLine(x, y, x2, y2);
-        x = x2;
-        y = y2;
-    }
-});
-
-canvas.addEventListener('touchend', (e) => {
-    e.preventDefault();
     isPressed = false;
     x = undefined;
     y = undefined;

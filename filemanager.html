@@ -146,7 +146,7 @@
 
     <script>
     const fileList = document.getElementById('fileList');
-    let fileStorage = JSON.parse(localStorage.getItem('fileStorage')) || []; // Load from localStorage
+    let fileStorage = JSON.parse(localStorage.getItem('fileStorage')) || []; 
 
     function loadFiles() {
         fileList.innerHTML = '';
@@ -175,7 +175,7 @@
                 const fileData = {
                     name: file.name,
                     type: file.type,
-                    content: event.target.result, // Store file content as Base64
+                    content: event.target.result, 
                 };
                 fileStorage.push(fileData);
                 saveToLocalStorage();
@@ -188,10 +188,10 @@
                 `;
                 fileList.appendChild(li);
             };
-            reader.readAsDataURL(file); // Read file as Base64
+            reader.readAsDataURL(file); 
         }
 
-        // Clear the file input after processing
+        
         fileInput.value = '';
     }
 
