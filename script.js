@@ -17,6 +17,8 @@ document.getElementById('start-button').addEventListener('click', function () {
     menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
 });
 
+
+
 function updateDate() {
     const dateElement = document.getElementById('date');
     const now = new Date();

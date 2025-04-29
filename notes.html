@@ -15,7 +15,27 @@
         <button>File</button>
         <div class="dropdown-menu">
           <button style="text-align: left;" onclick="location.reload();">New</button>
-          <button style="text-align: left;" onclick="saveNotes()">Save</button>
+          <button style="text-align: left;" onclick="savetoOSO()">Save</button>
+          <script>
+              function savetoOSO() {
+              const notesContent = document.getElementById('notes').value;
+              const fileName = prompt("Enter a name for your note:", "yournote.txt");
+              if (fileName) {
+              const fileData = {
+              name: fileName,
+              content: notesContent,
+              type: 'text/plain',
+              date: new Date().toLocaleString(),
+           };
+    
+            const files = JSON.parse(localStorage.getItem('fileManagerFiles')) || [];
+             files.push(fileData);
+             localStorage.setItem('fileManagerFiles', JSON.stringify(files));
+             alert(`File "${fileName}" saved to File Manager.`);
+    }
+  }
+          </script>
+          <button style="text-align: left;" onclick="saveNotes()">Save to your PC</button>
           <script>
             function saveNotes() {
             const notesContent = document.getElementById('notes').value;
@@ -54,7 +74,6 @@
                 <a href="browser.html">DaBrowser</a>
                 <a href="paint.html">Paint</a>
                 <a href="notes.html">Notes</a>
-                <a href="virtualpc.html">Virtual PC</a>
                 <a href="calculator.html">Calculator</a>
                 <a href="filemanager.html">File Manager</a>
               </div>
