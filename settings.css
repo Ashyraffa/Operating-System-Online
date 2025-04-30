@@ -87,37 +87,6 @@ footer {
     gap: 20px;
 }
 
-.windowbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background: #333333;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-}
-
-.windowbar p {
-    position: relative;
-    left: 1%;
-}
-
-.windowbar button {
-    background: #ff0000;
-    width: 50px;
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    padding: 10px;
-    margin: 5px 1%;
-    font-size: 1.2em;
-}
-
-.windowbar button:hover {
-    background-color: #ff000091;
-}
 
 .allapps {
     position: relative;

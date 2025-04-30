@@ -42,6 +42,20 @@ function restoreState(state) {
     };
 }
 
+// Function to resize the canvas dynamically
+function resizeCanvas() {
+    const currentState = canvas.toDataURL(); // Save current canvas state
+    canvas.width = canvas.parentElement.clientWidth;
+    canvas.height = canvas.parentElement.clientHeight;
+    restoreState(currentState); // Restore the saved state
+}
+
+// Listen for window resize events
+window.addEventListener('resize', resizeCanvas);
+
+// Initialize canvas size on load
+resizeCanvas();
+
 // Drawing functions
 function drawCircle(x, y) {
     ctx.beginPath();

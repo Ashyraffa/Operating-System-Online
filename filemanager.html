@@ -90,16 +90,12 @@
     </style>
 </head>
 <body>
-    <div class="windowbar">
-        <p>File Manager</p>
-        <a href="desktop.html"><button>X</button></a>
-    </div>
+
 
     <div class="ribbon">
         <div class="dropdown">
           <button>File</button>
           <div class="dropdown-menu">
-            <button style="text-align: left;" onclick="addFile()">Add File..</button>
             <button style="text-align: left;" onclick="document.getElementById('fileInput').click()">Upload File..</button>
           </div>
          </div>
@@ -119,7 +115,6 @@
             <label>To upload your file here, press the "Upload File" button.</label>
             <br>
             <br>
-            <button onclick="addFile()">Add File</button>
             <input type="file" id="fileInput" multiple style="display: none;" onchange="uploadFiles()">
             <button onclick="document.getElementById('fileInput').click()">Upload Files</button>
             <br>
@@ -257,50 +252,9 @@
 
     document.addEventListener('DOMContentLoaded', loadFiles);
     </script>
+    <script src="accesilibilty.js"></script>
 
       </div>
   
-  
-
-      <footer id="taskbar">
-        <div class="container">
-          <div class="left-side">
-            <div class="start">
-              <button id="start-button" class="start-button">Start</button>
-               <div class="start-menu" id="start-menu">
-                <a href="#" class="all-apps">All Apps</a>
-                <div class="start-dropdown">
-                  <a href="browser.html">DaBrowser</a>
-                  <a href="paint.html">Paint</a>
-                  <a href="notes.html">Notes</a>
-                  <a href="calculator.html">Calculator</a>
-                  <a href="filemanager.html">File Manager</a>
-                </div>
-                <a href="browser.html">DaBrowser <br> <label style="font-weight: lighter;">Browse the internet</label></a>
-                <a href="desktop.html">Desktop</a>
-                <a href="settings.html">Settings</a>
-                <a href="filemanager.html">File Manager</a>
-                <a href="index.html">Lock This PC</a>
-               </div>
-              </div>
-              <div class="icons">
-                  <a href="settings.html"><img src="icons/settings.png" width="40" height="40"></a>
-                  <a href="paint.html"><img src="icons/paint.png" width="40" height="40"></a>
-                  <a href="browser.html"><img src="icons/browser.png" width="40" height="40"></a>
-                  <a href="notes.html"><img src="icons/notes.png" width="40" height="40"></a>
-                  <a href="calculator.html"><img src="icons/calculator.png" width="40" height="40"></a>
-                  <a href="filemanager.html"><img src="icons/file-manager.png" width="40" height="40"></a>
-                  <link rel="stylesheet" href="style.css">
-                </div>
-            </div>
-          <div class="system-tray">
-            <p id="clock">--:--:--</p>
-            <br>
-            <p id="date">--/--/----</p>
-          </div>
-        </div>
-      </footer>
-      <script src="script.js"></script>
-      <script src="accesilibilty.js"></script>
 </body>
 </html>

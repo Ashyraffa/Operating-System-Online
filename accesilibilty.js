@@ -1,21 +1,34 @@
-const savedFontSize = localStorage.getItem('fontSize');
-if (savedFontSize) {
-  document.body.style.fontSize = savedFontSize;
+// Check if running inside an iframe
+const targetDocument = window.parent.document || document;
+
+// Function to increase text size
+function increaseTextSize() {
+  const currentSize = parseFloat(getComputedStyle(targetDocument.documentElement).getPropertyValue('--base-font-size') || '16px');
+  const newSize = Math.min(currentSize + 2, 24); // Limit max size to 24px
+  targetDocument.documentElement.style.setProperty('--base-font-size', `${newSize}px`);
+  localStorage.setItem('baseFontSize', newSize);
 }
 
-const root = document.documentElement;
+// Function to decrease text size
+function decreaseTextSize() {
+  const currentSize = parseFloat(getComputedStyle(targetDocument.documentElement).getPropertyValue('--base-font-size') || '16px');
+  const newSize = Math.max(currentSize - 2, 10); // Limit min size to 10px
+  targetDocument.documentElement.style.setProperty('--base-font-size', `${newSize}px`);
+  localStorage.setItem('baseFontSize', newSize);
+}
 
-document.getElementById('increase-text').addEventListener('click', () => {
-    console.log("Button clicked!");
-    const currentSize = parseFloat(getComputedStyle(root).getPropertyValue('--base-font-size'));
-    const newSize = currentSize + 2 + 'px';
-    root.style.setProperty('--base-font-size', newSize);
-    localStorage.setItem('fontSize', newSize);
+// Apply saved text size on load
+document.addEventListener('DOMContentLoaded', () => {
+  const savedSize = localStorage.getItem('baseFontSize');
+  if (savedSize) {
+    targetDocument.documentElement.style.setProperty('--base-font-size', `${savedSize}px`);
+  }
+
+  // Attach event listeners to buttons
+  const increaseButton = document.getElementById('increase-text');
+  const decreaseButton = document.getElementById('decrease-text');
+  if (increaseButton && decreaseButton) {
+    increaseButton.addEventListener('click', increaseTextSize);
+    decreaseButton.addEventListener('click', decreaseTextSize);
+  }
 });
-
-document.getElementById('decrease-text').addEventListener('click', () => {
-    const currentSize = parseFloat(getComputedStyle(root).getPropertyValue('--base-font-size'));
-    const newSize = currentSize - 2 + 'px';
-    root.style.setProperty('--base-font-size', newSize);
-    localStorage.setItem('fontSize', newSize);
-  });

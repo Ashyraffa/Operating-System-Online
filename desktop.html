@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="style.css">
-    <title>Operating System Online</title>
+    <title>Command Explorer</title>
     <style>
       body {
         background: url(photos/wallpaper/alien-planet-3840x2160-22104.jpg);
@@ -16,16 +16,8 @@
     <br>
     <br>
     <br>
-    <div class="shortcut">
-      <a href="filemanager.html"><img src="icons/file-manager.png" width="40" height="40"></a>
-      <p>File Manager</p>
-    </div>
     <br>
     <br>
-    <div class="shortcut">
-      <a href="browser.html"><img src="icons/browser.png" width="40" height="40"></a>
-      <p>DaBrowser</p>
-    </div>
     <br>
     <br>
     <br>
@@ -40,8 +32,12 @@
     <div id="custom-menu" class="context-menu">
       <ul>
         <li onclick="location.reload()">Refresh</li>
-        <a href="about.html" style="text-decoration: none; color: #f5f5f5;"><li>PC Properties</li></a>
-        <a href="personalize.html" style="text-decoration: none; color: #f5f5f5;"><li>Personalization</li></a>
+        <a href="#" style="text-decoration: none; color: #f5f5f5;" onclick="createWindow('Settings', '<iframe src=\'about.html\' style=\'width:100%; height:100%; border:none;\'></iframe>')">
+          <li>PC Properties</li>
+        </a>
+        <a href="#" style="text-decoration: none; color: #f5f5f5;" onclick="createWindow('Settings', '<iframe src=\'personalize.html\' style=\'width:100%; height:100%; border:none;\'></iframe>')">
+          <li>Personalization</li>
+        </a>
       </ul>
     </div>
     <br>
@@ -57,6 +53,15 @@
     <br>
     <br>
     <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <div id="window-container"></div> 
     <footer id="taskbar">
       <div class="container">
         <div class="left-side">
@@ -65,26 +70,37 @@
              <div class="start-menu" id="start-menu">
               <a href="#" class="all-apps">All Apps</a>
               <div class="start-dropdown">
-                <a href="browser.html">DaBrowser</a>
-                <a href="paint.html">Paint</a>
-                <a href="notes.html">Notes</a>
-                <a href="calculator.html">Calculator</a>
-                <a href="filemanager.html">File Manager</a>
+                <a href="#" data-app="DaBrowser" data-src="browser.html">DaBrowser</a>
+                <a href="#" data-app="Paint" data-src="paint.html">Paint</a>
+                <a href="#" data-app="Notes" data-src="notes.html">Notes</a>
+                <a href="#" data-app="Calculator" data-src="calculator.html">Calculator</a>
+                <a href="#" data-app="File Manager" data-src="filemanager.html">File Manager</a>
               </div>
-              <a href="browser.html">DaBrowser <br> <label style="font-weight: lighter;">Browse the internet</label></a>
+              <a href="#" data-app="DaBrowser" data-src="browser.html">DaBrowser <br> <label style="font-weight: lighter;">Browse the internet</label></a>
               <a href="desktop.html">Desktop</a>
-              <a href="settings.html">Settings</a>
-              <a href="filemanager.html">File Manager</a>
+              <a href="#" data-app="Settings" data-src="settings.html">Settings</a>
+              <a href="#" data-app="File Manager" data-src="filemanager.html">File Manager</a>
               <a href="index.html">Lock This PC</a>
              </div>
             </div>
             <div class="icons">
-                <a href="settings.html"><img src="icons/settings.png" width="40" height="40"></a>
-                <a href="paint.html"><img src="icons/paint.png" width="40" height="40"></a>
-                <a href="browser.html"><img src="icons/browser.png" width="40" height="40"></a>
-                <a href="notes.html"><img src="icons/notes.png" width="40" height="40"></a>
-                <a href="calculator.html"><img src="icons/calculator.png" width="40" height="40"></a>
-                <a href="filemanager.html"><img src="icons/file-manager.png" width="40" height="40"></a>
+                <a href="#" onclick="createWindow('Settings', '<iframe src=\'settings.html\' style=\'width:100%; height:100%; border:none;\'></iframe>')">
+                  <img src="icons/settings.png" width="40" height="40">
+                </a>
+                <a href="#" onclick="createWindow('Paint', '<iframe src=\'paint.html\' style=\'width:100%; height:100%; border:none;\'></iframe>')">
+                  <img src="icons/paint.png" width="40" height="40">
+                </a>
+                <a href="#" onclick="createWindow('DaBrowser', '<iframe src=\'browser.html\' style=\'width:100%; height:100%; border:none;\'></iframe>')">
+                  <img src="icons/browser.png" width="40" height="40"></a>
+                <a href="#" onclick="createWindow('Notes', '<iframe src=\'notes.html\' style=\'width:100%; height:100%; border:none;\'></iframe>')">
+                  <img src="icons/notes.png" width="40" height="40">
+                </a>
+                <a href="#" onclick="createWindow('Calculator', '<iframe src=\'calculator.html\' style=\'width:100%; height:100%; border:none;\'></iframe>')">
+                  <img src="icons/calculator.png" width="40" height="40">
+                </a>
+                <a href="#" onclick="createWindow('File Manager', '<iframe src=\'filemanager.html\' style=\'width:100%; height:100%; border:none;\'></iframe>')">
+                  <img src="icons/file-manager.png" width="40" height="40">
+                </a>
                 <link rel="stylesheet" href="style.css">
               </div>
           </div>
@@ -103,7 +119,135 @@
           document.body.style.backgroundSize = 'cover';
           document.body.style.backgroundPosition = 'center';
         }
+
+        // Listen for changes in localStorage to update the wallpaper dynamically
+        window.addEventListener('storage', (event) => {
+          if (event.key === 'wallpaper') {
+            document.body.style.backgroundImage = `url(${event.newValue})`;
+            document.body.style.backgroundSize = 'cover';
+            document.body.style.backgroundPosition = 'center';
+          }
+        });
+
+        // Restore open windows from localStorage
+        const savedWindows = JSON.parse(localStorage.getItem('openWindows')) || [];
+        savedWindows.forEach((win) => {
+          createWindow(win.title, win.content, win.position, win.size);
+        });
+
+        document.querySelectorAll('[data-app]').forEach((el) => {
+          el.addEventListener('click', (e) => {
+            e.preventDefault();
+            const appName = el.getAttribute('data-app');
+            const appSrc = el.getAttribute('data-src');
+            createWindow(appName, `<iframe src='${appSrc}' style='width:100%; height:100%; border:none;'></iframe>`);
+          });
+        });
       });
+
+      function createWindow(title, content, position = {}, size = {}) {
+        const container = document.getElementById('window-container');
+        const windowElement = document.createElement('div');
+        windowElement.className = 'window';
+        windowElement.innerHTML = `
+          <div class="window-header">
+            <span class="window-title">${title}</span>
+            <button class="window-maximize">🗖</button>
+            <button class="window-close" onclick="closeWindow(this)">×</button>
+          </div>
+          <div class="window-content">${content}</div>
+          <div class="window-resize-handle"></div>
+        `;
+        container.appendChild(windowElement);
+
+        // Set position and size if provided
+        if (position.left) windowElement.style.left = position.left;
+        if (position.top) windowElement.style.top = position.top;
+        if (size.width) windowElement.style.width = size.width;
+        if (size.height) windowElement.style.height = size.height;
+
+        // Make the window draggable
+        let isDragging = false, offsetX, offsetY;
+        const header = windowElement.querySelector('.window-header');
+        header.addEventListener('mousedown', (e) => {
+          isDragging = true;
+          offsetX = e.clientX - windowElement.offsetLeft;
+          offsetY = e.clientY - windowElement.offsetTop;
+          windowElement.style.zIndex = Date.now(); 
+        });
+        document.addEventListener('mousemove', (e) => {
+          if (isDragging) {
+            windowElement.style.left = `${e.clientX - offsetX}px`;
+            windowElement.style.top = `${e.clientY - offsetY}px`;
+          }
+        });
+        document.addEventListener('mouseup', () => (isDragging = false));
+
+        // Maximize functionality
+        const maximizeButton = windowElement.querySelector('.window-maximize');
+        maximizeButton.addEventListener('click', () => {
+          if (windowElement.classList.contains('maximized')) {
+            windowElement.classList.remove('maximized');
+            windowElement.style.left = '';
+            windowElement.style.top = '';
+            windowElement.style.width = '';
+            windowElement.style.height = '';
+          } else {
+            windowElement.classList.add('maximized');
+            windowElement.style.left = '0';
+            windowElement.style.top = '0';
+            windowElement.style.width = '100%';
+            windowElement.style.height = '100%';
+          }
+        });
+
+        // Resizing functionality
+        const resizeHandle = windowElement.querySelector('.window-resize-handle');
+        let isResizing = false, startX, startY, startWidth, startHeight;
+        resizeHandle.addEventListener('mousedown', (e) => {
+          isResizing = true;
+          startX = e.clientX;
+          startY = e.clientY;
+          startWidth = windowElement.offsetWidth;
+          startHeight = windowElement.offsetHeight;
+          windowElement.style.zIndex = Date.now(); 
+        });
+        document.addEventListener('mousemove', (e) => {
+          if (isResizing) {
+            const newWidth = startWidth + (e.clientX - startX);
+            const newHeight = startHeight + (e.clientY - startY);
+            windowElement.style.width = `${newWidth}px`;
+            windowElement.style.height = `${newHeight}px`;
+          }
+        });
+        document.addEventListener('mouseup', () => (isResizing = false));
+
+        saveWindowsState();
+      }
+
+      function closeWindow(button) {
+        button.parentElement.parentElement.remove();
+        saveWindowsState();
+      }
+
+      function saveWindowsState() {
+        const windows = document.querySelectorAll('.window');
+        const openWindows = Array.from(windows).map((win) => {
+          return {
+            title: win.querySelector('.window-title').innerText,
+            content: win.querySelector('.window-content').innerHTML,
+            position: {
+              left: win.style.left,
+              top: win.style.top,
+            },
+            size: {
+              width: win.style.width,
+              height: win.style.height,
+            },
+          };
+        });
+        localStorage.setItem('openWindows', JSON.stringify(openWindows));
+      }
     </script>
     <script src="script.js"></script>
     <script src="accesilibilty.js"></script>
