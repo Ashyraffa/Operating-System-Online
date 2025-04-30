@@ -97,6 +97,7 @@
           <button>File</button>
           <div class="dropdown-menu">
             <button style="text-align: left;" onclick="document.getElementById('fileInput').click()">Upload File..</button>
+            <button style="text-align: left;" onclick="createFolder()">Create Folder</button>
           </div>
          </div>
          <div class="dropdown">
@@ -117,6 +118,7 @@
             <br>
             <input type="file" id="fileInput" multiple style="display: none;" onchange="uploadFiles()">
             <button onclick="document.getElementById('fileInput').click()">Upload Files</button>
+            <button onclick="createFolder()">Create Folder</button>
             <br>
             <br>
             <div class="disk">
@@ -126,7 +128,7 @@
             </div>
         </div>
         <ul class="file-list" id="fileList">
-            <label>When you add/upload your files, it will shown here.</label>
+            <label>When you add/upload your files, they will be shown here.</label>
         </ul>
     </div>
 
@@ -143,17 +145,29 @@
     const fileList = document.getElementById('fileList');
     let fileStorage = JSON.parse(localStorage.getItem('fileStorage')) || []; 
 
-    function loadFiles() {
+    function loadFiles(folder = null) {
         fileList.innerHTML = '';
-        fileStorage.forEach(file => {
+        const files = folder ? folder.content : fileStorage;
+
+        files.forEach(file => {
             const li = document.createElement('li');
             li.innerHTML = `
                 <span>${file.name}</span>
+                ${file.type === 'folder' ? `<button onclick="openFolder('${file.name}')">Open</button>` : ''}
                 <button onclick="viewFile('${file.name}')">View</button>
+                <button onclick="renameFile('${file.name}')">Rename</button>
+                <button onclick="moveFile('${file.name}')">Move</button>
                 <button onclick="deleteFile(this, '${file.name}')">Delete</button>
             `;
             fileList.appendChild(li);
         });
+
+        if (folder) {
+            const backButton = document.createElement('button');
+            backButton.textContent = 'Back';
+            backButton.onclick = () => loadFiles();
+            fileList.prepend(backButton);
+        }
     }
 
     function saveToLocalStorage() {
@@ -179,6 +193,8 @@
                 li.innerHTML = `
                     <span>${file.name}</span>
                     <button onclick="viewFile('${file.name}')">View</button>
+                    <button onclick="renameFile('${file.name}')">Rename</button>
+                    <button onclick="moveFile('${file.name}')">Move</button>
                     <button onclick="deleteFile(this, '${file.name}')">Delete</button>
                 `;
                 fileList.appendChild(li);
@@ -190,8 +206,99 @@
         fileInput.value = '';
     }
 
+    function createFolder() {
+        const folderName = prompt('Enter folder name:');
+        if (folderName) {
+            const folderData = {
+                name: folderName,
+                type: 'folder',
+                content: [],
+            };
+            fileStorage.push(folderData);
+            saveToLocalStorage();
+
+            const li = document.createElement('li');
+            li.innerHTML = `
+                <span>${folderName}</span>
+                <button onclick="openFolder('${folderName}')">Open</button>
+                <button onclick="renameFile('${folderName}')">Rename</button>
+                <button onclick="moveFile('${folderName}')">Move</button>
+                <button onclick="deleteFile(this, '${folderName}')">Delete</button>
+            `;
+            fileList.appendChild(li);
+        }
+    }
+
+    function openFolder(folderName) {
+        const folder = fileStorage.find(f => f.name === folderName && f.type === 'folder');
+        if (folder) {
+            loadFiles(folder);
+        } else {
+            alert('Folder not found.');
+        }
+    }
+
+    function renameFile(fileName) {
+        const newName = prompt('Enter new name:', fileName);
+        if (newName) {
+            const file = fileStorage.find(f => f.name === fileName);
+            if (file) {
+                file.name = newName;
+                saveToLocalStorage();
+                loadFiles();
+            }
+        }
+    }
+
+    function moveFile(fileName) {
+        const folderName = prompt('Enter the name of the folder to move this file into:');
+        if (folderName) {
+            const folder = fileStorage.find(f => f.name === folderName && f.type === 'folder');
+            if (folder) {
+                const fileIndex = fileStorage.findIndex(f => f.name === fileName);
+                if (fileIndex !== -1) {
+                    const file = fileStorage.splice(fileIndex, 1)[0];
+                    folder.content.push(file);
+                    saveToLocalStorage();
+                    loadFiles();
+                    alert(`File "${fileName}" has been moved to folder "${folderName}".`);
+                } else {
+                    alert('File not found.');
+                }
+            } else {
+                alert('Folder not found.');
+            }
+        }
+    }
+
+    function deleteFile(button, fileName) {
+        const li = button.parentElement;
+        fileList.removeChild(li);
+
+        const fileIndex = fileStorage.findIndex(f => f.name === fileName);
+        if (fileIndex !== -1) {
+            fileStorage.splice(fileIndex, 1);
+            saveToLocalStorage();
+        }
+    }
+
+    function findFileRecursively(fileName, folder = fileStorage) {
+        for (const file of folder) {
+            if (file.name === fileName) {
+                return file;
+            }
+            if (file.type === 'folder') {
+                const foundFile = findFileRecursively(fileName, file.content);
+                if (foundFile) {
+                    return foundFile;
+                }
+            }
+        }
+        return null;
+    }
+
     function viewFile(fileName) {
-        const file = fileStorage.find(f => f.name === fileName);
+        const file = findFileRecursively(fileName);
 
         if (!file) {
             alert('File not found.');
@@ -229,17 +336,6 @@
         }
     }
 
-    function deleteFile(button, fileName) {
-        const li = button.parentElement;
-        fileList.removeChild(li);
-
-        const fileIndex = fileStorage.findIndex(f => f.name === fileName);
-        if (fileIndex !== -1) {
-            fileStorage.splice(fileIndex, 1);
-            saveToLocalStorage();
-        }
-    }
-
     function openModal() {
         document.getElementById('modalOverlay').style.display = 'block';
         document.getElementById('fileModal').style.display = 'block';
@@ -250,7 +346,7 @@
         document.getElementById('fileModal').style.display = 'none';
     }
 
-    document.addEventListener('DOMContentLoaded', loadFiles);
+    document.addEventListener('DOMContentLoaded', () => loadFiles());
     </script>
     <script src="accesilibilty.js"></script>
 

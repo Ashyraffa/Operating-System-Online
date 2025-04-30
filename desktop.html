@@ -8,6 +8,7 @@
       body {
         background: url(photos/wallpaper/alien-planet-3840x2160-22104.jpg);
         background-size: cover;
+        font-size: var(--base-font-size);
       }
     </style>
   </head>
@@ -128,6 +129,20 @@
             document.body.style.backgroundPosition = 'center';
           }
         });
+
+        // Listen for messages from iframes
+        window.addEventListener('message', (event) => {
+          if (event.data.action === 'increaseTextSize' || event.data.action === 'decreaseTextSize') {
+            document.documentElement.style.setProperty('--base-font-size', `${event.data.newSize}px`);
+            localStorage.setItem('baseFontSize', event.data.newSize);
+          }
+        });
+
+        // Apply saved text size on load
+        const savedSize = localStorage.getItem('baseFontSize');
+        if (savedSize) {
+          document.documentElement.style.setProperty('--base-font-size', `${savedSize}px`);
+        }
 
         // Restore open windows from localStorage
         const savedWindows = JSON.parse(localStorage.getItem('openWindows')) || [];

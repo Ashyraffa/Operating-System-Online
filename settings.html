@@ -9,11 +9,12 @@
     <main id="settings">
       <br>
         <h3>Settings</h3>
+
       <section id="menu">
         <div class="about" style="width: 350px;">
            <a href="about.html"><button>About</button></a>
            <br>
-           <label>About your PC and Operating System Online</label>
+           <label>About your PC and Command Explorer</label>
         </div>
         <div class="personalize" style="width: 350px;">
           <a href="personalize.html"><button>Personalization</button></a>
@@ -33,12 +34,23 @@
         <div class="reset">
           <button id="reset-settings">Reset to Default Settings</button>
           <script>
-              document.getElementById('reset-settings').addEventListener('click', () => {
-              if (confirm('Are you sure you want to reset all settings?\nThis will reset all of your settings and personalization options youre made so far.')) {
-              localStorage.clear();
-              location.reload();
-               }
-             });
+            document.getElementById('reset-settings').addEventListener('click', () => {
+              if (confirm('Are you sure you want to reset all settings?\nThis will reset all of your settings and personalization options you have made so far.')) {
+                
+                localStorage.clear();
+
+                
+                document.documentElement.style.setProperty('--base-font-size', '16px'); // Default font size
+
+               
+                const defaultWallpaper = 'photos/wallpaper/alien-planet-3840x2160-22104.jpg';
+                localStorage.setItem('wallpaper', defaultWallpaper);
+                document.body.style.backgroundImage = `url(${defaultWallpaper})`;
+
+                
+                location.reload();
+              }
+            });
           </script>
         </div>
       </section>
