@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Messaging App</title>
+  <style>
+     body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+.messaging-app {
+  display: flex;
+  height: 90vh;
+}
+
+.contacts {
+  width: 25%;
+  background-color: #f4f4f4;
+  padding: 10px;
+  border-right: 1px solid #ccc;
+}
+
+.contacts ul {
+  list-style: none;
+  padding: 0;
+}
+
+.contacts li {
+  padding: 10px;
+  cursor: pointer;
+}
+
+.contacts li:hover {
+  background-color: #ddd;
+}
+
+.chat-window {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+#chat-history {
+  flex: 1;
+  padding: 10px;
+  overflow-y: auto;
+  background-color: #fff;
+  border-bottom: 1px solid #ccc;
+}
+
+#message-input {
+  width: calc(100% - 60px);
+  padding: 10px;
+  border: none;
+  border-top: 1px solid #ccc;
+}
+
+.chat-window button {
+  width: 60px;
+  height: 20px;
+  border: none;
+  background-color: #007bff;
+  color: white;
+  cursor: pointer;
+}
+
+.chat-window button:hover {
+  background-color: #0056b3;
+}
+
+.ribbon {
+    display: flex;
+    padding: 1px;
+    background-color: #e0e0e0;
+  }
+
+  .ribbon button {
+    border: none;
+    color: #121212;
+    background: #e0e0e0;
+    margin-left: 4px;
+    padding: 6px 10px;
+    cursor: pointer;
+}
+
+.ribbon button:hover {
+    background: #f1f1f1;
+}
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown:hover .dropdown-menu {
+    display: block;
+}
+
+
+.dropdown-menu {
+    display: none;
+}
+
+
+.dropdown-menu {
+    width: 100px;
+    position: absolute;
+    background: #e0e0e0;
+    min-width: 90px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+}
+  </style>
+</head>
+<body>
+  <div class="ribbon">
+    <div class="dropdown">
+      <button>Contacts</button>
+      <div class="dropdown-menu">
+        <button style="text-align: left;" onclick="selectContact('Assistant')">Assistant</button>
+        <button style="text-align: left;">Add Contacts....</button>
+      </div>
+     </div>
+     <div class="dropdown">
+      <button>Help</button>
+      <div class="dropdown-menu">
+        <button onclick="alert('Messaging\nThis computer program is a part of Command Explorer and made by Ashyraffa. Another copy without a permission of this program will be taken seriously.')">About Messages</button>
+      </div>
+    </div>
+  </div>
+  <div class="messaging-app">
+    <div class="contacts">
+      <ul>
+        <h2>Messages</h2>
+        <li onclick="selectContact('Assistant')">Assistant</li>
+      </ul>
+    </div>
+    <div class="chat-window">
+      <div id="chat-history"></div>
+      <input type="text" id="message-input" placeholder="Type your message...">
+      <button onclick="sendMessage()">Send</button>
+    </div>
+  </div>
+  <script>
+    let selectedContact = 'Assistant';
+
+function selectContact(contact) {
+  selectedContact = contact;
+  document.getElementById('chat-history').innerHTML = `<p>Chatting with ${contact}</p>`;
+}
+
+function sendMessage() {
+  const input = document.getElementById('message-input');
+  const message = input.value.trim();
+  if (!message) return;
+
+
+  const chatHistory = document.getElementById('chat-history');
+  chatHistory.innerHTML += `<div><strong>You:</strong> ${message}</div>`;
+  input.value = '';
+
+  
+  if (selectedContact === 'Assistant') {
+    setTimeout(() => {
+      const botResponse = getChatbotResponse(message);
+      chatHistory.innerHTML += `<div><strong>${selectedContact}:</strong> ${botResponse}</div>`;
+      chatHistory.scrollTop = chatHistory.scrollHeight; 
+    }, 700);
+  }
+}
+
+function getChatbotResponse(message) {
+  const responses = {
+    hello: "Hi there! How can I assist you today?",
+    help: "Sure, I'm here to help! What do you need assistance with?",
+    bye: "Goodbye! Have a great day!",
+    thanks: "You're welcome! Let me know if there's anything else I can do for you.",
+    "how are you": "I'm just a chatbot, but I'm here to assist you!",
+    "what time is it": "I'm not sure about the exact time, but you can check your device's clock!",
+    "what are you doing": "I'm doing nothing :3"
+  };
+
+  const lowerCaseMessage = message.toLowerCase();
+  for (const keyword in responses) {
+    if (lowerCaseMessage.includes(keyword)) {
+      return responses[keyword];
+    }
+  }
+
+  return "Sorry, thats beyond my current scope. Let's talk something else.";
+}
+  </script>
+</body>
+</html>
