@@ -48,7 +48,7 @@ footer {
 .start-dropdown {
     display: none;
     position: absolute;
-    top: 0;
+    bottom: 0;
     left: 100%;
     background-color: #444444;
     border: none;
