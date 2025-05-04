@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wordle Game</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+        .board {
+            display: grid;
+            grid-template-columns: repeat(5, 50px);
+            gap: 5px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .tile {
+            width: 50px;
+            height: 50px;
+            border: 1px solid #ccc;
+            text-transform: uppercase;
+            font-size: 24px;
+            text-align: center;
+            line-height: 50px;
+            border-radius: 5px;
+        }
+        #submit {
+            background-color: green;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 10px;
+            color: #f5f5f5;
+        }
+        #submit:hover {
+            background-color: rgba(0, 128, 0, 0.503);
+        }
+        .correct {
+            background-color: green;
+            color: white;
+        }
+        .present {
+            background-color: orange;
+            color: white;
+        }
+        .absent {
+            background-color: gray;
+            color: white;
+        }
+        .input-row {
+            margin-top: 20px;
+        }
+        .ribbon {
+    display: flex;
+    padding: 1px;
+    background-color: #e0e0e0;
+  }
+
+  .ribbon button {
+    border: none;
+    color: #121212;
+    background: #e0e0e0;
+    margin-left: 4px;
+    padding: 6px 10px;
+    cursor: pointer;
+}
+
+.ribbon button:hover {
+    background: #f1f1f1;
+}
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown:hover .dropdown-menu {
+    display: block;
+}
+
+
+.dropdown-menu {
+    display: none;
+}
+
+
+.dropdown-menu {
+    width: 100px;
+    position: absolute;
+    background: #e0e0e0;
+    min-width: 90px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+}
+    </style>
+</head>
+<body>
+
+    <div class="ribbon">
+        <div class="dropdown">
+          <button>File</button>
+          <div class="dropdown-menu">
+            <button style="text-align: left;" onclick="location.reload()">New Game</button>
+
+          </div>
+         </div>
+         <div class="dropdown">
+          <button>Help</button>
+          <div class="dropdown-menu">
+            <button onclick="alert('Wordle\nThis computer program is a part of Command Explorer and made by Ashyraffa. Another copy without a permission of this program will be taken seriously.')">About Wordle</button>
+          </div>
+        </div>
+      </div>
+
+    <h1>Wordle</h1>
+    <div class="board" id="board"></div>
+    <div class="input-row">
+        <input type="text" id="guess" maxlength="5" placeholder="Enter your guess">
+        <button id="submit" onclick="submitGuess()">Submit</button>
+    </div>
+    <script> 
+        const words = "apple,grape,melon,peach,berry,green,house,class,board,table,chair,grass,place";
+
+
+       const wordList = words.split(",");
+
+
+       const targetWord = wordList[Math.floor(Math.random() * wordList.length)];
+
+        const maxGuesses = 6;
+        let currentRow = 0;
+
+        const board = document.getElementById('board');
+        for (let i = 0; i < maxGuesses * 5; i++) {
+            const tile = document.createElement('div');
+            tile.classList.add('tile');
+            board.appendChild(tile);
+        }
+
+        function submitGuess() {
+            const guessInput = document.getElementById('guess');
+            const guess = guessInput.value.toLowerCase();
+            if (guess.length !== 5) {
+                alert("Are you an idiot? ENTER 5 CHARACTERS!!");
+                return;
+            }
+
+            const rowStart = currentRow * 5;
+            for (let i = 0; i < 5; i++) {
+                const tile = board.children[rowStart + i];
+                tile.textContent = guess[i];
+                if (guess[i] === targetWord[i]) {
+                    tile.classList.add('correct');
+                } else if (targetWord.includes(guess[i])) {
+                    tile.classList.add('present');
+                } else {
+                    tile.classList.add('absent');
+                }
+            }
+
+            currentRow++;
+            guessInput.value = "";
+
+            if (guess === targetWord) {
+                alert("Oh, you guessed the word, fine.");
+                return;
+            }
+
+            if (currentRow === maxGuesses) {
+                alert(`Game over! The word was "${targetWord}". How idiot are you? you even can't answer this`);
+            }
+        }
+    </script>
+</body>
+</html>
