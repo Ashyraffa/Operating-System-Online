@@ -46,6 +46,24 @@
       #settings-button:hover {
         background: #33333329;
       }
+      .wifi-connections {
+        margin-top: 10px;
+        background: rgba(255, 255, 255, 0.1);
+        padding: 10px;
+        border-radius: 5px;
+        color: white;
+      }
+      .wifi-connections.hidden {
+        display: none;
+      }
+      .wifi-connections ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+      .wifi-connections li {
+        margin: 5px 0;
+      }
     </style>
   </head>
   <body>
@@ -137,6 +155,16 @@
             <label for="wifi-toggle">Wi-Fi</label>
             <input type="checkbox" id="wifi-toggle">
           </div>
+          <div id="wifi-connections" class="wifi-connections hidden">
+            <h4>Available Connections:</h4>
+            <p>(Click on the checkbox to connect)</p>
+            <ul>
+              <li>Labkom Spensa</li>
+              <input type="checkbox" id="wifi-toggle">
+              <li>Wilkom</li>             
+              <input type="checkbox" id="wifi-toggle">
+            </ul>
+          </div>
           <div class="action-item">
             <label for="hotspot-toggle">Mobile Hotspot</label>
             <input type="checkbox" id="hotspot-toggle">
@@ -207,8 +235,13 @@
 
         // Wi-Fi toggle functionality
         const wifiToggle = document.getElementById('wifi-toggle');
+        const wifiConnections = document.getElementById('wifi-connections');
         wifiToggle.addEventListener('change', () => {
-          alert(`Wi-Fi turned ${wifiToggle.checked ? 'on' : 'off'}`);
+          if (wifiToggle.checked) {
+            wifiConnections.classList.remove('hidden');
+          } else {
+            wifiConnections.classList.add('hidden');
+          }
         });
 
         // Volume slider functionality

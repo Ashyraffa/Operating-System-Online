@@ -38,6 +38,28 @@
       height: calc(100vh - 40px);
       border: none;
     }
+    .tab-bar {
+      display: flex;
+      background: #333333;
+      padding: 5px;
+      border-bottom: 1px solid #333;
+    }
+    .tab-bar button {
+      background: #f4f4f4;
+      border: 1px solid #ccc;
+      padding: 5px 10px;
+      margin-right: 5px;
+      cursor: pointer;
+    }
+    .tab-bar button.active-tab {
+      background: #d4d4d4;
+      font-weight: bold;
+    }
+    .tab-bar #new-tab {
+      background: #4caf50;
+      color: white;
+      font-weight: bold;
+    }
   </style>
   <link rel="stylesheet" href="browser.css">
 </head>
@@ -78,7 +100,6 @@
      </div>
   </div>
   <div class="toolbar">
-    <a href="desktop.html"><button id="close">Close DaBrowser</button></a>
     <button id="back" onclick="goBack()">Back</button>
     <button id="forward" onclick="goForward()">Forward</button>
     <button id="refresh" onclick="refreshPage()">Refresh</button>
@@ -87,11 +108,15 @@
     <button id="bookmarks" onclick="showbookmarks()">Bookmarks</button>
     <div class="bookmark">
       <button style="text-align: left;" onclick="redirect()">Rainbow Bubblegem</button>
-      <button onclick="redirect3()">RSS Feeds</button></a>
+      <button onclick="redirect3()">RSS Feeds</button>
       <button style="text-align: left;" onclick="redirect2()">Ashyraffa's Website</button>
+      <button style="text-align: left;" onclick="redirect4()">8-1 Website</button>
     </div>
     <button id="slicegallery">Web Slice Gallery</button>
     </div>
+  </div>
+  <div id="tab-bar" class="tab-bar">
+    <button id="new-tab" onclick="addTab()">+</button>
   </div>
   <div class="footbar">
     <input type="text" id="urlInput" placeholder="Search or enter web address" value="https://www.google.com">
@@ -102,58 +127,123 @@
   <iframe id="webview" src="https://www.google.com?igu=1"></iframe>
   <script src="script.js"></script>
   <script>
-    function loadSite() {
-      let url = document.getElementById('urlInput').value;
-      if (!url.startsWith('http')) {
-        url = 'https://' + url;
+    let tabs = [];
+    let activeTab = 0;
+
+    function addTab() {
+      const tabId = tabs.length;
+      tabs.push({ id: tabId, url: 'https://www.google.com?igu=1' });
+
+      const tabBar = document.getElementById('tab-bar');
+      const tabButton = document.createElement('button');
+      tabButton.textContent = `Tab ${tabId + 1}`;
+      tabButton.id = `tab-${tabId}`;
+      tabButton.onclick = () => switchTab(tabId);
+
+      const closeButton = document.createElement('span');
+      closeButton.textContent = ' ×';
+      closeButton.style.marginLeft = '5px';
+      closeButton.style.cursor = 'pointer';
+      closeButton.onclick = (e) => {
+        e.stopPropagation();
+        closeTab(tabId);
+      };
+
+      tabButton.appendChild(closeButton);
+      tabBar.insertBefore(tabButton, document.getElementById('new-tab'));
+
+      switchTab(tabId);
+    }
+
+    function switchTab(tabId) {
+      activeTab = tabId;
+      const tab = tabs[tabId];
+      document.getElementById('urlInput').value = tab.url;
+      document.getElementById('webview').src = tab.url;
+
+      document.querySelectorAll('#tab-bar button').forEach((btn) => {
+        btn.classList.remove('active-tab');
+      });
+      document.getElementById(`tab-${tabId}`).classList.add('active-tab');
+    }
+
+    function closeTab(tabId) {
+      tabs = tabs.filter((tab) => tab.id !== tabId);
+
+      const tabButton = document.getElementById(`tab-${tabId}`);
+      if (tabButton) tabButton.remove();
+
+      if (activeTab === tabId) {
+        if (tabs.length > 0) {
+          const nextTab = tabs[0].id;
+          switchTab(nextTab);
+        } else {
+          document.getElementById('urlInput').value = '';
+          document.getElementById('webview').src = '';
+        }
       }
+    }
+
+    function loadSite() {
+      const urlInput = document.getElementById('urlInput').value;
+      const url = urlInput.startsWith('http') ? urlInput : `https://${urlInput}`;
+      tabs[activeTab].url = url;
       document.getElementById('webview').src = url;
     }
 
+    document.addEventListener('DOMContentLoaded', () => {
+      addTab(); // Add the first tab on load
+    });
+
     function goHome() {
-  const homepage = 'https://www.google.com?igu=1';
-  document.getElementById('urlInput').value = homepage;
-  document.getElementById('webview').src = homepage;
-}
+      const homepage = 'https://www.google.com?igu=1';
+      document.getElementById('urlInput').value = homepage;
+      document.getElementById('webview').src = homepage;
+    }
 
-function redirect() {
-  const redirect = 'https://rainbow-bubblegem.fandom.com/wiki/Rainbow_Bubblegem_Wiki';
-  document.getElementById('urlInput').value = redirect;
-}
+    function redirect() {
+      const redirect = 'https://rainbow-bubblegem.fandom.com/wiki/Rainbow_Bubblegem_Wiki';
+      document.getElementById('urlInput').value = redirect;
+    }
 
-function redirect2() {
-  const redirect2 = 'https://ashyraffa.github.io/Personal-Website';
-  document.getElementById('urlInput').value = redirect2;
-}
+    function redirect2() {
+      const redirect2 = 'https://ashyraffa.github.io/Personal-Website';
+      document.getElementById('urlInput').value = redirect2;
+    }
 
-function redirect3() {
-  const redirect3 = 'https://rss.com/blog/popular-rss-feeds/';
-  document.getElementById('urlInput').value = redirect3;
-}
+    function redirect3() {
+      const redirect3 = 'https://rss.com/blog/popular-rss-feeds/';
+      document.getElementById('urlInput').value = redirect3;
+    }
+
+    function redirect4() {
+      const redirect4 = 'https://ashyraffa.github.io/Inti-Gayabebas';
+      document.getElementById('urlInput').value = redirect4;
+    }
 
     function goBack() {
-  const iframe = document.getElementById('webview');
-  iframe.contentWindow.history.back();
-}
+      const iframe = document.getElementById('webview');
+      iframe.contentWindow.history.back();
+    }
 
-function goForward() {
-  const iframe = document.getElementById('webview');
-  iframe.contentWindow.history.forward();
-}
+    function goForward() {
+      const iframe = document.getElementById('webview');
+      iframe.contentWindow.history.forward();
+    }
 
-function refreshPage() {
-  const iframe = document.getElementById('webview');
-  iframe.src = iframe.src;
-}
+    function refreshPage() {
+      const iframe = document.getElementById('webview');
+      iframe.src = iframe.src;
+    }
 
-function showbookmarks() {
-  const bookmarkDiv = document.querySelector('.bookmark'); // Select the div with the "bookmark" class
-  if (bookmarkDiv.style.display === 'block') {
-    bookmarkDiv.style.display = 'none'; // Hide the bookmarks
-  } else {
-    bookmarkDiv.style.display = 'block'; // Show the bookmarks
-  }
-}
+    function showbookmarks() {
+      const bookmarkDiv = document.querySelector('.bookmark'); // Select the div with the "bookmark" class
+      if (bookmarkDiv.style.display === 'block') {
+        bookmarkDiv.style.display = 'none'; // Hide the bookmarks
+      } else {
+        bookmarkDiv.style.display = 'block'; // Show the bookmarks
+      }
+    }
   </script>
 </body>
 </html>
