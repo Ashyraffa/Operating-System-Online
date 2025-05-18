@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Simple FPS Game</title>
+    <style>
+        body { margin: 0; overflow: hidden; background: #222; }
+        #score { position: absolute; color: #fff; left: 10px; top: 35px; font: 20px Arial; }
+
+    .ribbon {
+    display: flex;
+    padding: 1px;
+    background-color: #e0e0e0;
+  }
+
+  .ribbon button {
+    border: none;
+    color: #121212;
+    background: #e0e0e0;
+    margin-left: 4px;
+    padding: 6px 10px;
+    cursor: pointer;
+}
+
+.ribbon button:hover {
+    background: #f1f1f1;
+}
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown:hover .dropdown-menu {
+    display: block;
+}
+
+
+.dropdown-menu {
+    display: none;
+}
+
+
+.dropdown-menu {
+    width: 100px;
+    position: absolute;
+    background: #e0e0e0;
+    min-width: 90px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+}
+    </style>
+</head>
+<body>
+        <div class="ribbon">
+        <div class="dropdown">
+          <button>File</button>
+          <div class="dropdown-menu">
+            <button style="text-align: left;" onclick="location.reload()">New Game</button>
+
+          </div>
+         </div>
+         <div class="dropdown">
+          <button>Help</button>
+          <div class="dropdown-menu">
+            <button onclick="alert('This computer program is a part of Command Explorer and made by Ashyraffa. Another copy without a permission of this program will be taken seriously.')">About This Game...</button>
+          </div>
+        </div>
+      </div>
+    <div id="score">Score: 0</div>
+    <div id="crosshair"></div>
+    <canvas id="game"></canvas>
+    <script>
+        const canvas = document.getElementById('game');
+        const ctx = canvas.getContext('2d');
+        let width = window.innerWidth, height = window.innerHeight;
+        canvas.width = width;
+        canvas.height = height;
+
+        let score = 0;
+        let targets = [];
+        let player = { x: width/2, y: height/2, speed: 4 };
+        let keys = {};
+
+        function spawnTarget() {
+            const size = 30;
+            let x = Math.random() * (width - size);
+            let y = Math.random() * (height - size);
+            targets.push({ x, y, size });
+        }
+
+        function drawPlayer() {
+            ctx.save();
+            ctx.translate(player.x, player.y);
+            ctx.fillStyle = "#0ff";
+            ctx.beginPath();
+            ctx.arc(0, 0, 15, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.restore();
+        }
+
+        function drawTargets() {
+            ctx.fillStyle = "#f00";
+            targets.forEach(t => {
+                ctx.beginPath();
+                ctx.arc(t.x + t.size/2, t.y + t.size/2, t.size/2, 0, Math.PI * 2);
+                ctx.fill();
+            });
+        }
+
+        function updatePlayer() {
+            if (keys['w'] || keys['ArrowUp']) player.y -= player.speed;
+            if (keys['s'] || keys['ArrowDown']) player.y += player.speed;
+            if (keys['a'] || keys['ArrowLeft']) player.x -= player.speed;
+            if (keys['d'] || keys['ArrowRight']) player.x += player.speed;
+            player.x = Math.max(0, Math.min(width, player.x));
+            player.y = Math.max(0, Math.min(height, player.y));
+        }
+
+        function checkCollisions() {
+            for (let i = targets.length - 1; i >= 0; i--) {
+                let t = targets[i];
+                let dx = player.x - (t.x + t.size/2);
+                let dy = player.y - (t.y + t.size/2);
+                let dist = Math.sqrt(dx*dx + dy*dy);
+                if (dist < 15 + t.size/2) {
+                    targets.splice(i, 1);
+                    score++;
+                    document.getElementById('score').textContent = "Score: " + score;
+                    spawnTarget();
+                }
+            }
+        }
+
+        function shoot(e) {
+            let mx = e.clientX, my = e.clientY;
+            for (let i = targets.length - 1; i >= 0; i--) {
+                let t = targets[i];
+                let dx = mx - (t.x + t.size/2);
+                let dy = my - (t.y + t.size/2);
+                let dist = Math.sqrt(dx*dx + dy*dy);
+                if (dist < t.size/2) {
+                    targets.splice(i, 1);
+                    score++;
+                    document.getElementById('score').textContent = "Score: " + score;
+                    spawnTarget();
+                    break;
+                }
+            }
+        }
+
+        function gameLoop() {
+            ctx.clearRect(0, 0, width, height);
+            drawPlayer();
+            drawTargets();
+            updatePlayer();
+            checkCollisions();
+            requestAnimationFrame(gameLoop);
+        }
+
+        window.addEventListener('resize', () => {
+            width = window.innerWidth;
+            height = window.innerHeight;
+            canvas.width = width;
+            canvas.height = height;
+        });
+
+        document.addEventListener('keydown', e => keys[e.key.toLowerCase()] = true);
+        document.addEventListener('keyup', e => keys[e.key.toLowerCase()] = false);
+        canvas.addEventListener('mousedown', shoot);
+
+        for (let i = 0; i < 3; i++) spawnTarget();
+        gameLoop();
+    </script>
+</body>
+</html>
